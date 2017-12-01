@@ -1,0 +1,22 @@
+{
+  "name": "queue",
+  "version": "2.0.0",
+  "description": "Shop Management Application",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "queue",
+    "shop",
+    "management"
+  ],
+  "author": "Prateek Kher",
+  "license": "MIT",
+  "dependencies": {
+    "angular": "^1.6.6",
+    "angular-route": "^1.6.6",
+    "jquery": "^3.2.1",
+    "semantic-ui": "^2.2.13"
+  }
+}

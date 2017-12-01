@@ -1,0 +1,39 @@
+<table class="ui table" ng-init="getTodayCashbook()">
+    <thead>
+        <tr>
+            <td>#</td>
+            <td ng-if="user.authLevel >= 5">Posted By</td>
+            <td>Timestamp</td>
+            <td>Description</td>
+            <td>Amount</td>
+            <td>In / Out</td>
+            <td>Status</td>
+            <td ng-if="user.authLevel >= 5">Action</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="row in cashbook">
+            <td>{{ row.id }}</td>
+            <td ng-if="user.authLevel >= 5">{{ row.username }}</td>
+            <td>{{ row.datetime }}</td>
+            <td>{{ row.description }}</td>
+            <td>{{ row.amount }}</td>
+            <td>{{ row.direction == 0 ? 'In' : 'Out' }}</td>
+            <td>
+                <i class="icon checkmark" ng-if="row.status == 1"></i>
+                <i class="icon radio" ng-if="row.status == 0"></i>
+                <i class="icon remove" ng-if="row.status == -1"></i>
+            </td>
+            <td ng-if="user.authLevel >= 5">
+                <div class="ui two buttons">
+                    <button class="ui green button" ng-click="changeStatus(row, 1)">
+                        Approve
+                    </button>
+                    <button class="ui red button" ng-click="changeStatus(row, -1)">
+                        Reject
+                    </button>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>

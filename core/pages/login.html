@@ -1,0 +1,31 @@
+<div class="ui middle aligned center aligned stackable grid">
+    <div class="ui six wide column">
+        <div ng-show="warning" class="ui top attached warning segment">
+            <div class="content">
+                Invalid User
+            </div>
+        </div>
+        <div class="ui form segment" ng-class="warning ? 'bottom attached' : ''">
+            <h2 class="ui header">
+                User Login
+            </h2>
+            <div class="ui field">
+                <label for="username">Username</label>
+                <div class="ui icon input">
+                    <input type="text" ng-model="user.name">
+                    <i class="user icon"></i>
+                </div>
+            </div>
+            <div class="ui field">
+                <label for="password">Password</label>
+                <div class="ui icon input">
+                    <input type="password" ng-model="user.password">
+                    <i class="hide icon"></i>
+                </div>
+            </div>
+
+            <button ng-click="login()" class="ui green submit button">Submit</button>
+            <button ng-click="reset()" class="ui red button">Reset</button>
+        </div>
+    </div>
+</div>

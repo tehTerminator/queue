@@ -1,0 +1,48 @@
+<div class="ui top attached menu">
+    <div class="header item">
+        Filter Tasks
+    </div>
+    <div class="ui pointing dropdown item" ng-init="initDropdown()">
+        Job Type
+        <i class="icon dropdown"></i>
+        <div class="menu">
+            <a class="item" ng-click="selectCategoryId(0)">All</a>
+            <a class="item" ng-repeat="category in categories" ng-click="selectCategoryId(category)">{{ category.name }}</a>
+        </div>
+    </div>
+
+    <div class="ui pointing dropdown item">
+        Operator
+        <i class="dropdown icon"></i>
+        <div class="menu">
+            <a class="item" ng-click="selectUserId(0)">All Users</a>
+            <a class="item" ng-repeat="user in allUsers" ng-click="selectUserId(user)">{{ user.name }}</a>
+        </div>
+    </div>
+
+    <div class="right menu">
+        <a class="item" ng-click="toggleFilter()">
+            <i class="hide icon"></i>{{ toggleButtonText }}
+        </a>
+    
+        <a class="item" ng-click="refreshTasks()" ng-show="activeRefresh == true">
+            <i class="spinner icon"></i>
+            Refresh
+        </a>
+    </div>
+</div>
+<div class="ui bottom attached segment" ng-init="getAllTask()">
+    <a
+    ng-repeat="task in allTasks | HideTask:hideSelected | UserFilter:selectedUserId | CategoryFilter:selectedCategoryId | orderBy : '+id'"
+    class="ui label"
+    style="margin-bottom: 5px"
+    ng-class="getColor(task)"
+    ng-click="acceptTask(task)"
+    title="{{ task.insertTime | dateToISO | date : 'dd - MMM hh:mm a' }}">
+        {{ task.id }} - {{ task.customer }}
+        <div class="detail" ng-if="task.acceptedBy != 0">
+            {{ task.acceptedByUser }}
+        </div>
+        <i class="delete icon" ng-if="user.authLevel > 5"></i>
+    </a>
+</div>

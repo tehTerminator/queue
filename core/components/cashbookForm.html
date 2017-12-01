@@ -1,0 +1,28 @@
+<div class="ui raised form segment">
+    <h3 class="ui header">Enter Cash Transaction Details</h3>
+    <div class="ui three stackable fields">
+        <div class="eight wide field">
+            <label for="description">Description</label>
+            <input type="text" ng-model="transaction.description"></div>
+        <div class="four wide field">
+            <label for="amount">Amount</label>
+            <input type="number" ng-model="transaction.amount">
+        </div>
+        <div class="field">
+            <label for="type">Type</label>
+            <select
+                class="ui dropdown" 
+                ng-model="transaction.direction" 
+                ng-init="initDropdown()">
+                    <option value="">Income</option>
+                    <option value="0">Income</option>
+                    <option value="1">Expense</option>
+            </select>
+        </div>
+    </div>
+    <button 
+        ng-click="addTransaction()"
+        class="ui green labeled icon button">
+        Add<i class="icon add"></i>
+    </button>
+</div>

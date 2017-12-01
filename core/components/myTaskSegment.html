@@ -1,0 +1,33 @@
+<div class="ui four cards">
+    <div class="card" ng-repeat="task in allTasks | UserFilter:user.id">
+        <div class="content">
+            <div class="header">{{ task.customer }}</div>
+            <div class="meta">
+                <div class="right floated time">{{ task.insertTime | dateToISO | date : 'dd - MMM hh:mm a' }}</div>
+                <div class="category">{{ task.categoryName }}</div>
+            </div>
+            <div class="description">
+                {{ task.remark }}
+            </div>
+        </div>
+
+        <div class="ui four bottom attached mini icon buttons">
+            <div class="ui green button" ng-hide="task.status == 0" ng-click="setStatus(task, 0)">
+                <i class="icon play"></i>
+            </div>
+            <div class="ui green button" ng-show="task.status == 0" ng-click="setStatus(task, 1)">
+                <i class="icon checkmark"></i>
+            </div>
+            <div class="ui blue button" ng-click="setStatus(task, -1)">
+                <i class="icon clock"></i>
+            </div>
+            <div class="ui orange button" ng-click="unmark(task)">
+                <i class="icon remove"></i>
+            </div>
+            <div class="ui red button" ng-click="setStatus(task, -2)" ng-class="user.authLevel < 5 ? 'disabled' : ''">
+                <i class="icon trash"></i>
+            </div>
+        </div>
+
+    </div>
+</div>
