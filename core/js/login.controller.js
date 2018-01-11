@@ -1,4 +1,4 @@
-app.controller('LoginPageController', function($scope, $http, $location){
+app.controller('LoginPageController', function($scope, $location, UserService){
     $scope.user = {
         name: '',
         password: '',
@@ -7,30 +7,8 @@ app.controller('LoginPageController', function($scope, $http, $location){
     $scope.warning = false;
 
     $scope.login = function(){
-        var request = {
-            queryType: 'select',
-            tableName: 'user',
-            params: {
-                conditions: $scope.user
-            }
-        };
-
-        $http.post(serverLink, request)
-        .then(function(response){
-            if( response.status == 200 ){
-                var user = response.data.serverData;
-                if( user.length > 0 ){
-                    $scope.$parent.setUser( user[0] );
-                    $location.url('/');
-                } 
-                else{
-                    $scope.warning = true;
-                }
-            }
-            else{
-                $scope.warning = true;
-            }
-        });
+        UserService.login($scope.user.name, $scope.user.password);
+        $scope.warning = true;
     }
     
     $scope.reset = function(){

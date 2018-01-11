@@ -1,11 +1,7 @@
-
-    <button class="ui labeled icon fluid button" ng-click="goBack()" ng-hide="step == 1">
-        <i class="icon left arrow"></i>
-        Go Back
-    </button>
-
-    <div class="ui bottom attached vertical fluid menu" ng-show="step==1">
-        <div class="header item">Select Category</div>
+    <div class="ui stackable vertical fluid menu" ng-show="step==1">
+        <div class="header item" ng-init="refreshCategories()">Select Category
+            <i class="icon refresh" ng-click="refreshCategories()"></i>
+        </div>
         <a 
         class="ui item" 
         ng-repeat="category in categories" 
@@ -17,6 +13,11 @@
 
 
     <div class="ui form segment" ng-show="step==2">
+        <button class="ui labeled icon fluid button" ng-click="goBack()">
+            <i class="icon left arrow"></i>
+            Go Back
+        </button>
+
         <div class="ui header">Enter Customer Details</div>
         <div class="ui required field">
             <label for="customerName">Customer Name</label>

@@ -30,4 +30,3 @@
     $adapter->generateQuery($query_type, $params);
     $adapter->execute();
     $adapter->echo_output();   
-    

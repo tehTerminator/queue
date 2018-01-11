@@ -26,6 +26,12 @@ app.directive('appRoot', function(){
     return{
         restrict: 'E',
         templateUrl: 'core/components/cashbookTable.html',
+        controller : 'CashbookTableController',
+        scope: {
+            'count':'<',
+            'index':'<',
+            'query':'<',
+        }
     }
 })
 
@@ -33,7 +39,7 @@ app.directive('appRoot', function(){
     return{
         restrict : 'E',
         templateUrl : 'core/components/insertForm.html',
-        controller : 'InsertTaskFormController'
+        controller : 'InsertTaskFormController',
     }
 })
 
@@ -50,5 +56,30 @@ app.directive('appRoot', function(){
         restrict : 'E',
         templateUrl : 'core/components/myTaskSegment.html',
         controller : 'MyTaskController'
+    }
+})
+
+.directive('paginationTable', function(){
+    return{
+        templateUrl : 'core/components/tablePagination.html',
+        controller : 'PaginationController',
+        transclude : true,
+        scope: {}
+    }
+})
+
+.directive('createProductForm', function(){
+    return{
+        templateUrl : 'core/components/createProductForm.html',
+        controller : 'CreateProductFormController',
+        replace : true,
+    }
+})
+
+.directive('productUsageForm', function(){
+    return{
+        templateUrl : 'core/components/productUsageForm.html',
+        controller : 'ProductUsageFormController',
+        replace : true
     }
 })

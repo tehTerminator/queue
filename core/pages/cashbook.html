@@ -1,4 +1,10 @@
 <div class="ui segment">
     <cashbook-form></cashbook-form>
-    <cashbook-table></cashbook-table>
+    <pagination-table>
+        <cashbook-table
+            count = "$parent.pageLength"
+            index = "$parent.currentPage"
+            query = "$parent.searchText">
+        </cashbook-table>
+    </pagination-table>
 </div>

@@ -1,0 +1,20 @@
+<div class="ui form segment">
+    <div class="ui header">
+        Create New Product
+    </div>
+    <div class="ui field">
+        <label for="product_name">Product Name</label>
+        <div class="input">
+            <input type="text" ng-model="product.name" name="product_name">
+        </div>
+    </div>
+
+    <div class="ui field">
+        <label for="quantity">Initial Quantity</label>
+        <div class="input">
+            <input type="number" name="quantity" ng-model="product.quantity">
+        </div>
+    </div>
+
+    <button class="ui green submit button" ng-click="createProduct()">Create Product</button>
+</div>

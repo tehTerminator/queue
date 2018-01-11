@@ -1,32 +1,28 @@
-app.controller('CashbookFormController', function($scope, $http){
+app.controller('CashbookFormController', function($scope, UserService){
     $scope.transaction = {
         description : "",
         amount : 0,
         direction : 0,
-        user_id: $scope.$parent.user.id,
-        status : $scope.$parent.user.authLevel < 5 ? 0 : 1
+        user_id: UserService.activeUser.id,
+        status : UserService.activeUser.authLevel < 5 ? 0 : 1
     };
 
     $scope.addTransaction = function(){
-        var request = {
-            queryType : 'insert',
-            tableName : 'cashbook',
-            params : {
-                'columnNames' : ['user_id', 'description', 'amount', 'direction', 'status'],
-                'userData' : $scope.transaction
-            }
-        };
-
-        $scope.$emit('InsertItem', request);
+        $scope.$emit('InsertItem', {
+            'columnNames' : ['user_id', 'description', 'amount', 'direction', 'status'],
+            'userData' : $scope.transaction
+        });
 
         //Reset Transaction
         $scope.transaction = {
             description : "",
             amount : 0,
             direction : 0,
-            user_id: $scope.$parent.user.id,
-            status : $scope.$parent.user.authLevel < 5 ? 0 : 1
+            user_id: UserService.activeUser.id,
+            status : UserService.activeUser.authLevel < 5 ? 0 : 1
         };
+
+        $("#descriptionField").focus();
     }
 
 })

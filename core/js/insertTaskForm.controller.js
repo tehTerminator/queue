@@ -1,17 +1,46 @@
-app.controller('InsertTaskFormController', function($scope, $timeout, MySQLService, Categories){
+app.controller('InsertTaskFormController', function($scope, $timeout, MySQLService){
     $scope.step = 1;
     $scope.customerName = "";
     $scope.amountCollected = 0;
     $scope.selectedCategory = {};
     $scope.remark = "";
     $scope.activeRefresh = true;
-
-    $scope.categories = Categories.data;
+    $scope.categories = [];
 
     $scope.selectCategory = function(category){
         $scope.step = 2;
         $scope.selectedCategory = category;
         $scope.amountCollected = category.rate;
+    }
+
+    $scope.refreshCategories = function(){
+        var categoryUsageCount = {};
+        MySQLService.select('task',{
+                columnNames : ['count(type) as usageToday', 'type'],
+                conditions : {"DATE(insertTime)" : "CURDATE()"},
+                'GROUP BY' : 'type',
+                "ORDER BY" : "TYPE ASC"
+        })
+        .then(function(response){
+            angular.forEach(response.data.serverData, function(item){
+                categoryUsageCount[item.type] = item.usageToday;
+            });
+        })
+        .then(function(){
+            $scope.categories = [];
+            MySQLService.select('categories')
+            .then(function(response){
+                angular.forEach(response.data.serverData, function(item){
+                    if( categoryUsageCount[item.id] == undefined ){
+                        item.usageToday = 0;
+                    } else{
+                        item.usageToday = categoryUsageCount[item.id];
+                    }
+
+                    $scope.categories.push( item );
+                })
+            })
+        })
     }
 
     $scope.preview = function(){

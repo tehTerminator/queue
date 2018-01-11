@@ -1,6 +1,7 @@
-app.controller('TaskPageController', function($scope, MySQLService, AllUsers){
+app.controller('TaskPageController', function($scope, MySQLService, UserService){
     $scope.allTasks = [];
     $scope.activateRefresh = true;
+    $scope.users = UserService.all;
     
     $scope.$on('CreateTask', function(event, args){
         var data = {
@@ -8,7 +9,7 @@ app.controller('TaskPageController', function($scope, MySQLService, AllUsers){
             userData : {
                 customer : args.customerName,
                 type : args.category.id,
-                insertedBy : $scope.$parent.user.id,
+                insertedBy : UserService.activeUser.id,
                 amountCollected : args.amountCollected,
                 remark : args.remark
             }
@@ -27,8 +28,8 @@ app.controller('TaskPageController', function($scope, MySQLService, AllUsers){
                     jobType : args.category.name,
                     amountCollected : args.amountCollected,
                     endTime : null,
-                    insertedBy : $scope.$parent.user.id,
-                    insertedByUser : $scope.$parent.user.name,
+                    insertedBy : UserService.activeUser.id,
+                    insertedByUser : UserService.activeUser.name,
                     accepectedBy : 0,
                     accepectedByUser : null,
                     status : -1,
@@ -49,16 +50,17 @@ app.controller('TaskPageController', function($scope, MySQLService, AllUsers){
         var post = MySQLService.select('task', {
             columnNames : ['task.*', 'categories.name as categoryName'],
             'join' : 'categories on categories.id = task.type',
-            conditions : {'status' : ['<', 1]}
+            conditions : {'status' : ['BETWEEN', '-1 and 0']},
         });
 
         post.then(function(response){
+            console.log(response);
             if( response.status == 200 && response.data.serverData.length > 0 ){
                 $scope.myTasks = [];
                 $scope.allTasks = [];
                 angular.forEach(response.data.serverData, function(item){
                     if( item.acceptedBy != 0 ){
-                        item.acceptedByUser = AllUsers.get(item.acceptedBy).name;
+                        item.acceptedByUser = UserService.get(item.acceptedBy).name;
                     } 
                     $scope.allTasks.push(item);
                 })

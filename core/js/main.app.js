@@ -1,5 +1,5 @@
 var app = angular.module("MainApp", ['ngRoute']);
-var serverLink = 'core/php/sql.php';
+var serverLink = 'core/php/sql2.php';
 
 app.config(function($routeProvider, $locationProvider){
     $routeProvider
@@ -72,34 +72,73 @@ app.config(function($routeProvider, $locationProvider){
     return link;
 })
 
-.factory('AllUsers', function(MySQLService){
-    var users = {};
+.factory('UserService', function(MySQLService, $location){
+    var user = {};
 
-    users.data = [];
+    user.all = [];
+    user.activeUser = {
+        name : "Anonymous",
+        authLevel : 0,
+        isLoggedIn : false,
+    };
 
-    users.retrieve = function(){
+    user.retrieve = function(){
         var post = MySQLService.select('user');
 
         post.then(function(response){
             if( response.status == 200 ){
                 angular.forEach(response.data.serverData, function(item){
-                    users[item.id] = item;
-                    users.data.push(item);
+                    user[item.id] = item;
+                    user.all.push(item);
                 });
             }
         });
     }
 
-    users.get = function(index){
-        if( users[index] != undefined ){
-            return users[index];
+    user.get = function(index){
+        if( user[index] != undefined ){
+            return user[index];
         } 
         else{
             return null;
         }
     }
 
-    return users;
+    user.login = function(username, password){
+        var request = MySQLService.select('user', {
+            conditions : {'name' : username, 'password' : password}
+        });
+
+        request.then(function(response){
+            console.log(response);
+            if( response.status == 200 ){
+                var data = response.data.serverData;
+
+                if( data.length == 1 ){
+                    user.activeUser = data[0];
+                    user.activeUser.isLoggedIn = true;
+                    $location.url('/');
+                } 
+                else{
+                    user.activeUser = {name : "Anonymous", authLevel : 0, isLoggedIn : false }
+                }
+            }
+        });
+    }
+
+    user.logout = function(){
+        user.activeUser = {name : "Anonymous", authLevel : 0, isLoggedIn : false }
+        $location.url("login");
+    }
+
+    user.isLoggedIn = function(){
+        if( user.activeUser.isLoggedIn != undefined ) 
+            return user.activeUser.isLoggedIn;
+        else 
+            return false;
+    }
+
+    return user;
 })
 
 .factory('Categories', function(MySQLService){
@@ -145,6 +184,79 @@ app.config(function($routeProvider, $locationProvider){
 
 })
 
+.factory('ProductService', function(MySQLService){
+    var products = {};
+    products.all = [];
+
+    products.retrive = function(){
+        MySQLService.select('products')
+
+        .then(function(response){
+            if( response.status == 200 ){
+                angular.forEach(response.data.serverData, function(item){
+                    products[item.id] = item;
+                    products.all.push(item);
+                });
+            }
+        });
+    }
+
+    products.get = function(index){
+        return products.all[index];
+    }
+
+    products.insert = function(productName, initialQuantity){
+        MySQLService.insert('product', {
+            columnNames : ['name', 'quantity'],
+            userData : {name : productName, quantity : initialQuantity}
+        })
+
+        .then(function(response){
+            if( response.status == 200 ){
+                products.all.push({
+                    id : response.data.serverData.lastInsertId,
+                    name : productName,
+                    quantity : initialQuantity
+                })
+            }
+        });
+    }
+
+    products.recordUsage = function(transaction){
+
+        var description = transaction.description + " " + transaction.product.name + " " + transaction.quantity;
+        MySQLService.insert('cashbook', {
+            'columnNames' : ['user_id', 'description', 'amount', 'direction', 'status'],
+            userData : {
+                "user_id"       : transaction.user_id,
+                "description"   : description,
+                "amount"        : transaction.amount,
+                "direction"     : transaction.direction,
+                "status"        : transaction.status,
+            }
+        })
+
+        .then(function(response){
+            console.log(response);
+            transaction.product_id = transaction.product.id;
+            delete( transaction.product );
+            delete( transaction.description );
+
+            transaction['cashbook_id'] = response.data.lastInsertId
+
+            console.log( transaction );
+            MySQLService.insert('product_transaction', {
+                columnNames : ['product_id', 'quantity', 'user_id', 'cashbook_id', 'direction', 'amount', 'status'],
+                userData : transaction
+            });
+        });
+    }
+
+    return products;
+})
+
+
+
 .filter('dateToISO', function(){
     return function(input){
         if( typeof(input) == "undefined" ){
@@ -163,6 +275,11 @@ var STATUS = {
     ACTIVE : 0,
     COMPLETED : 1,
     APPROVED : 2
+}
+
+var DIRECTION = {
+    IN : 0,
+    OUT : 1,
 }
 
 function timeDiff(end, start) {

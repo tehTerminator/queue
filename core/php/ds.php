@@ -3,9 +3,10 @@
     class DataAdapter{
         private $connection;
         private $tableName;
-        private $output;
+        public $output;
         private $query;
         private $userData;
+        public $lastInsertId;
         
         public function __construct($connection ,$tableName){
             $this->connection = $connection;
@@ -57,13 +58,11 @@
                         $val = $value;
                     }
 
-                    if( strpos($val, '(') !== false ){
+                    if( (strpos($val, '(') !== false) || ( strpos($val, 'and') !== false ) ){
                         $this->query .= $key . $comparison_operator . $val . $operator; 
                     } else{
                         $this->query .= $key . $comparison_operator . "'" . $val . "' " . $operator;
                     }
-
-                    
                 }
                 if( $operator == " AND ")
                     $this->query = substr($this->query, 0, strlen($this->query) - 5);
@@ -159,4 +158,5 @@
         public function echo_output(){
             echo json_encode( $this->output );
         }
+
     }

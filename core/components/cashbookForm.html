@@ -3,20 +3,17 @@
     <div class="ui three stackable fields">
         <div class="eight wide field">
             <label for="description">Description</label>
-            <input type="text" ng-model="transaction.description"></div>
+            <input type="text" ng-model="transaction.description" id="descriptionField"></div>
         <div class="four wide field">
             <label for="amount">Amount</label>
             <input type="number" ng-model="transaction.amount">
         </div>
+
         <div class="field">
-            <label for="type">Type</label>
-            <select
-                class="ui dropdown" 
-                ng-model="transaction.direction" 
-                ng-init="initDropdown()">
-                    <option value="">Income</option>
-                    <option value="0">Income</option>
-                    <option value="1">Expense</option>
+            <label for="">Transaction Type</label>
+            <select ng-model="transaction.direction" class="ui fluid selection dropdown" ng-init="initDropdown()">
+                <option value="0">Income</option>
+                <option value="1">Expense</option>
             </select>
         </div>
     </div>

@@ -1,9 +1,9 @@
-<div class="ui top attached menu">
+<div class="ui top stackable attached inverted blue menu">
     <div class="header item">
         Filter Tasks
     </div>
-    <div class="ui pointing dropdown item" ng-init="initDropdown()">
-        Job Type
+    <div class="ui pointing dropdown icon item" ng-init="initDropdown()">
+        <i class="cart icon"></i>
         <i class="icon dropdown"></i>
         <div class="menu">
             <a class="item" ng-click="selectCategoryId(0)">All</a>
@@ -11,12 +11,22 @@
         </div>
     </div>
 
-    <div class="ui pointing dropdown item">
-        Operator
-        <i class="dropdown icon"></i>
+    <div class="ui pointing dropdown icon item">
+        <i class="user icon"></i>
+        <i class="icon dropdown"></i>
         <div class="menu">
             <a class="item" ng-click="selectUserId(0)">All Users</a>
-            <a class="item" ng-repeat="user in allUsers" ng-click="selectUserId(user)">{{ user.name }}</a>
+            <a class="item" ng-repeat="user in users" ng-click="selectUserId(user)">{{ user.name }}</a>
+        </div>
+    </div>
+
+    <div class="ui pointing dropdown icon item">
+        <i class="icon calendar"></i>
+        <i class="dropdown icon"></i>
+        <div class="menu">
+            <a class="item" ng-click="setDate(0)">All Dates</a>
+            <a class="item" ng-click="setDate(date)" ng-repeat="date in dates">{{ date | date : 'dd - MMM' }} </a>
+            <a class="item" ng-click="setDate(-1)">Old</a>
         </div>
     </div>
 
@@ -33,7 +43,7 @@
 </div>
 <div class="ui bottom attached segment" ng-init="getAllTask()">
     <a
-    ng-repeat="task in allTasks | HideTask:hideSelected | UserFilter:selectedUserId | CategoryFilter:selectedCategoryId | orderBy : '+id'"
+    ng-repeat="task in allTasks | HideTask:hideSelected | UserFilter:selectedUserId | CategoryFilter:selectedCategoryId | DateFilter: filteredDate |orderBy : '+id'"
     class="ui label"
     style="margin-bottom: 5px"
     ng-class="getColor(task)"

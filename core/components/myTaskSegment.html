@@ -1,4 +1,4 @@
-<div class="ui four cards">
+<div class="ui four stackable cards">
     <div class="card" ng-repeat="task in allTasks | UserFilter:user.id">
         <div class="content">
             <div class="header">{{ task.customer }}</div>
@@ -12,19 +12,19 @@
         </div>
 
         <div class="ui four bottom attached mini icon buttons">
-            <div class="ui green button" ng-hide="task.status == 0" ng-click="setStatus(task, 0)">
+            <div title="Activate" class="ui green button" ng-hide="task.status == 0" ng-click="setStatus(task, 0)">
                 <i class="icon play"></i>
             </div>
-            <div class="ui green button" ng-show="task.status == 0" ng-click="setStatus(task, 1)">
+            <div title="Complete" class="ui green button" ng-show="task.status == 0" ng-click="setStatus(task, 1)">
                 <i class="icon checkmark"></i>
             </div>
-            <div class="ui blue button" ng-click="setStatus(task, -1)">
+            <div title="Deactivate" class="ui blue button" ng-click="setStatus(task, -1)" ng-class="task.status == -1 ? 'disabled' : ''">
                 <i class="icon clock"></i>
             </div>
-            <div class="ui orange button" ng-click="unmark(task)">
+            <div title="Unmark" class="ui orange button" ng-click="unmark(task)">
                 <i class="icon remove"></i>
             </div>
-            <div class="ui red button" ng-click="setStatus(task, -2)" ng-class="user.authLevel < 5 ? 'disabled' : ''">
+            <div title="Delete" class="ui red button" ng-click="setStatus(task, -2)" ng-class="user.authLevel < 5 ? 'disabled' : ''">
                 <i class="icon trash"></i>
             </div>
         </div>
