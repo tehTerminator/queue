@@ -8,14 +8,6 @@
             <label for="amount">Amount</label>
             <input type="number" ng-model="transaction.amount">
         </div>
-
-        <div class="field">
-            <label for="">Transaction Type</label>
-            <select ng-model="transaction.direction" class="ui fluid selection dropdown" ng-init="initDropdown()">
-                <option value="0">Income</option>
-                <option value="1">Expense</option>
-            </select>
-        </div>
     </div>
     <button 
         ng-click="addTransaction()"

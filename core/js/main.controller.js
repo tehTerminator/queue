@@ -1,9 +1,8 @@
-app.controller('MainController', function($scope, $location, $rootScope, UserService, Categories){
+app.controller('MainController', function($scope, $location, $rootScope, UserService){
     $scope.user = UserService.activeUser;
 
     $scope.init = function(){
         UserService.retrieve();
-        Categories.retrieve();
     }
 
     $scope.forceLogin = function(){
@@ -27,4 +26,14 @@ app.controller('MainController', function($scope, $location, $rootScope, UserSer
     }
 
     $scope.init();
-});
+})
+
+.controller('AdminController', function(UserService, $location, $scope){
+    $scope.init = function(){
+        if( UserService.activeUser.authLevel < 5 ){
+            $location.url("home");
+        }
+    }
+
+    $scope.init();
+})

@@ -1,16 +1,6 @@
-app.controller('ProductUsageFormController', function($scope, ProductService, UserService, MySQLService){
+app.controller('ProductUsageFormController', function($scope, UserService, MySQLService){
     
     $scope.products = [];
-
-    $scope.getProducts = function(){
-        MySQLService.select('product')
-
-        .then(function(response){
-            console.log(response);
-            $scope.products = response.data.serverData;
-            $scope.initDropdown();
-        });
-    }
 
     $scope.transaction = {
         description : '',
@@ -23,17 +13,44 @@ app.controller('ProductUsageFormController', function($scope, ProductService, Us
         status : UserService.activeUser.authLevel < 5 ? 0 : 1
     };
 
+    $scope.getProducts = function(){
+        MySQLService.select('product')
+        .then(function(response){
+            $scope.products = response.data.serverData;
+            $scope.initDropdown();
+        });
+    }
+
+
     $scope.insertRecord = function(){
-        ProductService.recordUsage( $scope.transaction );
-        $scope.transaction = {
-            description : '',
-            product : {},
-            quantity : 0,
-            user_id : UserService.activeUser.id,
-            cashbook_id : 0,
-            amount : 0,
-            direction : 0,
-        };
+        var row = $scope.transaction;
+        row["description"] = row.description + " " + row.quantity + " " + row.product.name;
+        MySQLService.insert('cashbook', {
+            columnNames : ['user_id', 'giver', 'receiver', 'description', 'amount', 'status'],
+            userData : {
+                "user_id" : row.user_id,
+                "description" : row.description,
+                "giver" : 1,
+                "receiver" : 2,
+                "amount" : row.amount,
+                "status" : row.status 
+            }
+        })
+        .then(function(response){
+            var cashbookId = response.data.lastInsertId;
+            MySQLService.insert('product_transaction', {
+                columnNames : ["product_id", "quantity", "user_id", "cashbook_id", "direction", "amount", "status"],
+                userData : {
+                    product_id : row.product.id,
+                    quantity : row.quantity,
+                    user_id : row.user_id,
+                    cashbook_id : cashbookId,
+                    direction : row.direction,
+                    amount : row.amount,
+                    status : row.status
+                }
+            })
+        });
     }
 
     $scope.selectProduct = function(product){

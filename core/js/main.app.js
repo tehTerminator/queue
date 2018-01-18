@@ -21,7 +21,16 @@ app.config(function($routeProvider, $locationProvider){
             templateUrl : 'core/pages/task.html',
             controller : 'TaskPageController'
         })
-
+        
+        .when('/report', {
+            templateUrl : 'core/pages/report.html',
+        })
+        
+        .when('/admin', {
+            templateUrl : 'core/pages/admin.html',
+            controller : 'AdminController'
+        })
+        
         .when('/login', {
             templateUrl: 'core/pages/login.html',
             controller: 'LoginPageController'
@@ -105,12 +114,11 @@ app.config(function($routeProvider, $locationProvider){
     }
 
     user.login = function(username, password){
-        var request = MySQLService.select('user', {
+        MySQLService.select('user', {
             conditions : {'name' : username, 'password' : password}
-        });
+        })
 
-        request.then(function(response){
-            console.log(response);
+        .then(function(response){
             if( response.status == 200 ){
                 var data = response.data.serverData;
 
@@ -141,122 +149,6 @@ app.config(function($routeProvider, $locationProvider){
     return user;
 })
 
-.factory('Categories', function(MySQLService){
-    var cat = {};
-    cat.data = [];
-
-    cat.retrieve = function(){
-        var post2 = MySQLService.select('task', {
-            columnNames : ['count(type) as usageToday', 'type'],
-            conditions : {"DATE(insertTime)" : "CURDATE()"},
-            'GROUP BY' : 'type',
-            "ORDER BY" : "TYPE ASC"
-        });
-
-        post2.then(function(response){
-            var count = {};
-            angular.forEach(response.data.serverData, function(item){
-                count[item.type] = item.usageToday;
-            })
-            
-            var post = MySQLService.select('categories');
-    
-            post.then(function(response){
-                console.log(response);
-                angular.forEach(response.data.serverData, function(item){
-                    cat[item.id] = item;
-                    if( count[item.id] != undefined ){
-                        item.usageToday = count[item.id]
-                    } else{
-                        item.usageToday = 0;
-                    }
-                    cat.data.push(item);
-                });
-            });
-        });
-    } 
-
-    cat.get = function(id){
-        return cat[id];
-    }
-
-    return cat;
-
-})
-
-.factory('ProductService', function(MySQLService){
-    var products = {};
-    products.all = [];
-
-    products.retrive = function(){
-        MySQLService.select('products')
-
-        .then(function(response){
-            if( response.status == 200 ){
-                angular.forEach(response.data.serverData, function(item){
-                    products[item.id] = item;
-                    products.all.push(item);
-                });
-            }
-        });
-    }
-
-    products.get = function(index){
-        return products.all[index];
-    }
-
-    products.insert = function(productName, initialQuantity){
-        MySQLService.insert('product', {
-            columnNames : ['name', 'quantity'],
-            userData : {name : productName, quantity : initialQuantity}
-        })
-
-        .then(function(response){
-            if( response.status == 200 ){
-                products.all.push({
-                    id : response.data.serverData.lastInsertId,
-                    name : productName,
-                    quantity : initialQuantity
-                })
-            }
-        });
-    }
-
-    products.recordUsage = function(transaction){
-
-        var description = transaction.description + " " + transaction.product.name + " " + transaction.quantity;
-        MySQLService.insert('cashbook', {
-            'columnNames' : ['user_id', 'description', 'amount', 'direction', 'status'],
-            userData : {
-                "user_id"       : transaction.user_id,
-                "description"   : description,
-                "amount"        : transaction.amount,
-                "direction"     : transaction.direction,
-                "status"        : transaction.status,
-            }
-        })
-
-        .then(function(response){
-            console.log(response);
-            transaction.product_id = transaction.product.id;
-            delete( transaction.product );
-            delete( transaction.description );
-
-            transaction['cashbook_id'] = response.data.lastInsertId
-
-            console.log( transaction );
-            MySQLService.insert('product_transaction', {
-                columnNames : ['product_id', 'quantity', 'user_id', 'cashbook_id', 'direction', 'amount', 'status'],
-                userData : transaction
-            });
-        });
-    }
-
-    return products;
-})
-
-
-
 .filter('dateToISO', function(){
     return function(input){
         if( typeof(input) == "undefined" ){
@@ -278,8 +170,8 @@ var STATUS = {
 }
 
 var DIRECTION = {
-    IN : 0,
-    OUT : 1,
+    INCOME : 0,
+    EXPENSE : 1,
 }
 
 function timeDiff(end, start) {

@@ -1,4 +1,4 @@
-app.controller('InsertTaskFormController', function($scope, $timeout, MySQLService){
+app.controller('InsertTaskFormController', function($scope, $timeout, MySQLService, UserService){
     $scope.step = 1;
     $scope.customerName = "";
     $scope.amountCollected = 0;
@@ -15,6 +15,7 @@ app.controller('InsertTaskFormController', function($scope, $timeout, MySQLServi
 
     $scope.refreshCategories = function(){
         var categoryUsageCount = {};
+        $scope.categories = [];
         MySQLService.select('task',{
                 columnNames : ['count(type) as usageToday', 'type'],
                 conditions : {"DATE(insertTime)" : "CURDATE()"},
@@ -27,7 +28,6 @@ app.controller('InsertTaskFormController', function($scope, $timeout, MySQLServi
             });
         })
         .then(function(){
-            $scope.categories = [];
             MySQLService.select('categories')
             .then(function(response){
                 angular.forEach(response.data.serverData, function(item){
@@ -36,7 +36,6 @@ app.controller('InsertTaskFormController', function($scope, $timeout, MySQLServi
                     } else{
                         item.usageToday = categoryUsageCount[item.id];
                     }
-
                     $scope.categories.push( item );
                 })
             })
@@ -63,16 +62,20 @@ app.controller('InsertTaskFormController', function($scope, $timeout, MySQLServi
         $scope.categories[ $scope.categories.indexOf($scope.selectedCategory) ].usageToday++;
         $scope.step = 1;
 
-        var post = MySQLService.insert('cashbook', {
-            'columnNames' : ['user_id', 'description', 'amount', 'direction', 'status'],
-            'userData' : {
-                description : $scope.customerName + " - " + $scope.selectedCategory.name,
-                amount : $scope.amountCollected,
-                direction : 0,
-                user_id: $scope.$parent.user.id,
-                status : $scope.$parent.user.authLevel < 5 ? 0 : 1
-            }
-        });
+        if( $scope.amountCollected > 0 ){
+            MySQLService.insert('cashbook', {
+                'columnNames' : ['user_id', 'giver', 'receiver', 'description', 'amount', 'status'],
+                'userData' : {
+                    description : $scope.customerName + " - " + $scope.selectedCategory.name,
+                    user_id: UserService.activeUser.id,
+                    status : UserService.activeUser.authLevel < 5 ? 0 : 1,
+                    giver : 1,
+                    receiver: 2,
+                    amount: $scope.amountCollected,
+                }
+            })
+            .then($scope.customerName = "");
+        }
     }
 
     $scope.refreshTasks = function(){

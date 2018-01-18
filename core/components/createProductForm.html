@@ -16,5 +16,5 @@
         </div>
     </div>
 
-    <button class="ui green submit button" ng-click="createProduct()">Create Product</button>
+    <button class="ui green submit button" ng-show="product.name.length > 3" ng-click="createProduct()">Create Product</button>
 </div>

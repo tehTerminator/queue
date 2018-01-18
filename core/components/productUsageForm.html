@@ -1,4 +1,4 @@
-<div class="ui form segment">
+<div class="ui form segment" ng-init="getProducts()">
     <a class="ui top right attached blue label" ng-click="getProducts()">
         Refresh
     </a>
@@ -21,8 +21,8 @@
     <div class="ui field">
         <label for="direction">Transaction Type</label>
         <select ng-model="transaction.direction" class="ui fluid selection dropdown" ng-init="initDropdown()">
-            <option class="item" value="1">Sell</option>
-            <option class="item" value="0">Buy</option>
+            <option class="item" value="0" selected="selected">Sell</option>
+            <option class="item" value="1">Buy</option>
         </select>
     </div>
 
@@ -40,6 +40,6 @@
             </div>
         </div>
 
-        <button class="ui green fluid button" ng-click="insertRecord()">Submit</button>
+        <button class="ui green fluid button" ng-click="insertRecord()" ng-show="transaction.description.length > 3">Submit</button>
 
 </div>

@@ -1,1 +1,33 @@
-<h1>{{ title }}</h1>
+<h2 class="ui top attached header">Hello {{ user.name }}
+        <button class="ui right floated button" ng-click="refresh()">Refresh</button>
+</h2>   
+<div class="ui bottom attached segment" ng-class="isLoading==true?'loading' : ''">
+    
+    <div class="ui two stackable cards">
+        <div class="ui card">
+            <div class="content">
+                <div class="header">Jobs Completed Per User</div>
+            </div>
+            <div class="content jobCard"></div>
+        </div>
+        <div class="ui card">
+            <div class="content">
+                <div class="header">Job Inserted By Users</div>
+            </div>
+            <div class="content jobInsertCard">
+            </div>
+        </div>
+        <div class="ui card">
+            <div class="content">
+                <div class="header">Products Used Per Users</div>
+            </div>
+            <div class="content productUsageCard"></div>
+        </div>
+        <div class="ui card" ng-init="refresh()">
+            <div class="content">
+                <div class="header">Amount of Services Per User</div>
+            </div>
+            <div class="content moneyCard"></div>
+        </div>
+    </div>
+</div>

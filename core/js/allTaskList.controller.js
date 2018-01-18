@@ -1,7 +1,6 @@
-app.controller('AllTaskListController', function ($scope, MySQLService, Categories) {
+app.controller('AllTaskListController', function ($scope, MySQLService) {
     $scope.hideSelected = false;
     $scope.toggleButtonText = "Hide Selected";
-    $scope.categories = Categories.data;
     $scope.selectedCategoryId = 0;
     $scope.selectedUserId = 0;
     $scope.dates = [];

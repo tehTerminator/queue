@@ -83,3 +83,11 @@ app.directive('appRoot', function(){
         replace : true
     }
 })
+
+.directive('productUsageTable', function(){
+    return{
+        templateUrl : 'core/components/productUsageTable.html',
+        controller : 'ProductUsageTableController',
+        replace : true
+    }
+})

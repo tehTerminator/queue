@@ -15,10 +15,8 @@ app.controller('TaskPageController', function($scope, MySQLService, UserService)
             }
         };
 
-        var post = MySQLService.insert('task', data);
-
-        post.then(function(response){
-            console.log(response);
+        MySQLService.insert('task', data)
+        .then(function(response){
             if( response.status == 200 && response.data.serverData != undefined ){
                 //Success
                 var task = {
@@ -43,22 +41,21 @@ app.controller('TaskPageController', function($scope, MySQLService, UserService)
 
     $scope.$on('Remove Task', function(e, args){
         $scope.allTasks.splice( $scope.allTasks.indexOf(args), 1 );
-    })
+    });
 
 
     $scope.getAllTask = function(){
-        var post = MySQLService.select('task', {
+        MySQLService.select('task', {
             columnNames : ['task.*', 'categories.name as categoryName'],
             'join' : 'categories on categories.id = task.type',
             conditions : {'status' : ['BETWEEN', '-1 and 0']},
-        });
+        })
 
-        post.then(function(response){
-            console.log(response);
+        .then(function(response){
             if( response.status == 200 && response.data.serverData.length > 0 ){
-                $scope.myTasks = [];
                 $scope.allTasks = [];
                 angular.forEach(response.data.serverData, function(item){
+                    item.id = Number.parseInt(item.id);
                     if( item.acceptedBy != 0 ){
                         item.acceptedByUser = UserService.get(item.acceptedBy).name;
                     } 
