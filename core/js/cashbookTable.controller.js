@@ -2,10 +2,12 @@ app.controller('CashbookTableController', function($scope, MySQLService, UserSer
     $scope.cashbook = [];
     $scope.user = UserService.activeUser;
     $scope.accounts = {};
+    $scope.isLoading = false;
 
     $scope.getTodayCashbook = function(){
-
+        $scope.isLoading = true;
         var user = UserService.activeUser;
+        $scope.cashbook = [];
 
         var params = {
             conditions : {
@@ -24,7 +26,6 @@ app.controller('CashbookTableController', function($scope, MySQLService, UserSer
 
         MySQLService.select('accounts')
         .then(function(response){
-            console.log(response);
             angular.forEach(response.data.serverData, function(item){
                 $scope.accounts[item.id] = item.name;
             })
@@ -33,19 +34,17 @@ app.controller('CashbookTableController', function($scope, MySQLService, UserSer
             MySQLService.select('cashbook', params)
             .then(function(response){
                 if(response.status == 200){
-                    //Success                
-                    var data = response.data.serverData;
-                    $scope.cashbook = [];
-                    angular.forEach(data, function(item){
+                    //Success                                   
+                    angular.forEach(response.data.serverData, function(item){
                         item.giver = $scope.accounts[item.giver];
                         item.receiver = $scope.accounts[item.receiver];
                         $scope.cashbook.push(item);
                     });
-    
-                    $scope.emitDataLoaded();
                 }
-            });        
+            });
+            $scope.isLoading = false;        
         })
+        .then($scope.emitDataLoaded());
     }
 
     $scope.changeStatus = function(transaction, status){
@@ -80,9 +79,8 @@ app.controller('CashbookTableController', function($scope, MySQLService, UserSer
         $scope.$emit('DataLoaded', {data : $scope.cashbook.length});
     }
 
-    $scope.$on('Insert Item', function(event, item){
-        $scope.cashbook.push(item);
-        $scope.$emit('DataLoaded', {data : $scope.cashbook.length});
+    $scope.$on('AddButtonClick', function(e, a){
+        $scope.getTodayCashbook();
     })
 
 })

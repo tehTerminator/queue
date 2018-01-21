@@ -14,7 +14,6 @@ app.config(function($routeProvider, $locationProvider){
 
         .when('/cashbook', {
             templateUrl : 'core/pages/cashbook.html',
-            controller : 'CashbookController'
         })
 
         .when('/task', {

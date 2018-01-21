@@ -1,10 +1,31 @@
 <div class="ui raised form segment">
     <h3 class="ui header">Enter Cash Transaction Details</h3>
     <div class="ui three stackable fields">
-        <div class="eight wide field">
+        <div class="four wide field">
+            <label for="giver">From Account</label>
+            <div class="input">
+                <select 
+                    ng-options="option.name for option in accounts track by option.id"
+                    ng-model="transaction.giver" 
+                    class="ui fluid dropdown">
+                </select>
+            </div>
+        </div>
+        <div class="four wide field">
+            <label for="">To Account</label>
+            <div class="input">
+                <select 
+                    ng-init="initDropdown();getAccounts()"
+                    ng-options="option.name for option in accounts track by option.id"
+                    ng-model="transaction.receiver" 
+                    class="ui fluid dropdown">
+                </select>
+            </div>
+        </div>
+        <div class="six wide field">
             <label for="description">Description</label>
             <input type="text" ng-model="transaction.description" id="descriptionField"></div>
-        <div class="four wide field">
+        <div class="two wide field">
             <label for="amount">Amount</label>
             <input type="number" ng-model="transaction.amount">
         </div>

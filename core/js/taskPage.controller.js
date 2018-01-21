@@ -48,7 +48,7 @@ app.controller('TaskPageController', function($scope, MySQLService, UserService)
         MySQLService.select('task', {
             columnNames : ['task.*', 'categories.name as categoryName'],
             'join' : 'categories on categories.id = task.type',
-            conditions : {'status' : ['BETWEEN', '-1 and 0']},
+            conditions : {'status' : ['BETWEEN', -1, 0]},
         })
 
         .then(function(response){

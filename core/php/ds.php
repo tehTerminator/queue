@@ -51,14 +51,19 @@
                                            
                 foreach ($params['conditions'] as $key => $value) {
                     if( is_array($value) ){
-                        $comparison_operator = " " . $value[0] . " ";
-                        $val = $value[1];
+                        if( count($value) <= 2 ){
+                            $comparison_operator = " " . $value[0] . " ";
+                            $val = $value[1];
+                        } else{
+                            $comparison_operator = " " . $value[0] ." ";
+                            $val = $value[1] . " AND " . $value[2]; 
+                        }
                     } else {
                         $comparison_operator = " = ";
                         $val = $value;
                     }
 
-                    if( (strpos($val, '(') !== false) || ( strpos($val, 'and') !== false ) ){
+                    if( (strpos($val, '(') !== false) || ( strpos($val, 'AND') !== false ) ){
                         $this->query .= $key . $comparison_operator . $val . $operator; 
                     } else{
                         $this->query .= $key . $comparison_operator . "'" . $val . "' " . $operator;

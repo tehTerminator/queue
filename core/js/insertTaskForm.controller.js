@@ -1,16 +1,34 @@
 app.controller('InsertTaskFormController', function($scope, $timeout, MySQLService, UserService){
     $scope.step = 1;
-    $scope.customerName = "";
-    $scope.amountCollected = 0;
-    $scope.selectedCategory = {};
-    $scope.remark = "";
+    $scope.task = {
+        customerName : "",
+        amountCollected : 0,
+        selectedCategory : {},
+        remark : ""
+    }
+
+    $scope.cashbook = {
+        giver : {},
+        receiver: {},
+        amount : 0,
+    }
+
     $scope.activeRefresh = true;
     $scope.categories = [];
+    $scope.accounts = [];
+    $scope.requireSeperateEntry = false;
+
+    $scope.init = function(){
+        MySQLService.select('accounts')
+        .then(function(response){
+            $scope.accounts = response.data.serverData;
+        });
+    }
 
     $scope.selectCategory = function(category){
         $scope.step = 2;
-        $scope.selectedCategory = category;
-        $scope.amountCollected = category.rate;
+        $scope.task.selectedCategory = category;
+        $scope.task.amountCollected = category.rate;
     }
 
     $scope.refreshCategories = function(){
@@ -43,46 +61,65 @@ app.controller('InsertTaskFormController', function($scope, $timeout, MySQLServi
     }
 
     $scope.preview = function(){
-        $scope.step = 3
+        if( $scope.requireSeperateEntry == true && $scope.step == 2){
+            $scope.step = 3;
+        } else{
+            $scope.step = 4;
+        }
     }
 
     $scope.goBack = function(){
-        $scope.step = $scope.step > 1 ? $scope.step - 1 : 1;
+        if( $scope.step == 4 && $scope.requireSeperateEntry == false ){
+            $scope.step = 2;
+        } else{
+            $scope.step = $scope.step > 1 ? $scope.step - 1 : 1;
+        }
     }
 
     $scope.submitData = function(){
+
         var data = {
-            customerName : $scope.customerName,
-            amountCollected : $scope.amountCollected,
-            remark : $scope.remark,
-            category : $scope.selectedCategory
+            customerName : $scope.task.customerName,
+            amountCollected : $scope.task.amountCollected,
+            remark : $scope.task.remark,
+            category : $scope.task.selectedCategory
         };
 
         $scope.$emit("CreateTask", data);
-        $scope.categories[ $scope.categories.indexOf($scope.selectedCategory) ].usageToday++;
+        $scope.categories[ $scope.categories.indexOf($scope.task.selectedCategory) ].usageToday++;
         $scope.step = 1;
 
-        if( $scope.amountCollected > 0 ){
+        if( $scope.requireSeperateEntry == true ){
+            //Create Seperate Entry in Cashbook
             MySQLService.insert('cashbook', {
                 'columnNames' : ['user_id', 'giver', 'receiver', 'description', 'amount', 'status'],
                 'userData' : {
-                    description : $scope.customerName + " - " + $scope.selectedCategory.name,
+                    description : "Paid for "  + $scope.task.customerName + " - " + $scope.task.selectedCategory.name,
+                    user_id : UserService.activeUser.id,
+                    status : UserService.activeUser.authLevel < 5 ? 0 : 1,
+                    giver : $scope.cashbook.giver.id,
+                    receiver : $scope.cashbook.receiver.id,
+                    amount : $scope.cashbook.amount
+                }
+            })
+            $scope.task.amountCollected = $scope.task.amountCollected - $scope.cashbook.amount;
+        }
+
+        if( $scope.task.amountCollected > 0 ){
+            MySQLService.insert('cashbook', {
+                'columnNames' : ['user_id', 'giver', 'receiver', 'description', 'amount', 'status'],
+                'userData' : {
+                    description : "Sales For " + $scope.task.customerName + " - " + $scope.task.selectedCategory.name,
                     user_id: UserService.activeUser.id,
                     status : UserService.activeUser.authLevel < 5 ? 0 : 1,
                     giver : 1,
                     receiver: 2,
-                    amount: $scope.amountCollected,
+                    amount: $scope.task.amountCollected,
                 }
             })
-            .then($scope.customerName = "");
         }
+        $scope.task.customerName = "";
     }
 
-    $scope.refreshTasks = function(){
-        $scope.activeRefresh = false;
-        $timeout(function(){
-            $scope.activeRefresh = true;
-        }, 5000);
-        $scope.$emit("Get All Task");
-    }
+    $scope.init();
 })
