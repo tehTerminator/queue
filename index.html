@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,41 +8,33 @@
     <title>Maharaja Shop App</title>
     <base href="/q2/">
 
-    <script src="node_modules\angular\angular.js"></script>
-    <script src="node_modules\jquery\dist\jquery.js"></script>
-    <script src="node_modules\semantic-ui\dist\semantic.js"></script>
-    <script src="node_modules\angular-route\angular-route.js"></script>
-    
-    <script src="chart\chartist.min.js"></script>
+    <script src="core/angular.js"></script>
+    <script src="core/jquery.js"></script>
+    <script src="core/semantic.js"></script>
+    <script src="core/angular-route.js"></script>
 
-    <link rel="stylesheet" href="node_modules\semantic-ui\dist\semantic.css">
-    <link rel="stylesheet" href="chart\chartist.min.css">
+    <script src="core/chart/chartist.min.js"></script>
 
-    <script src="core\js\main.app.js"></script>
-    <script src="core\js\directives.js"></script>
+    <link rel="stylesheet" href="core/semantic.css">
+    <link rel="stylesheet" href="core/chart/chartist.min.css">
 
-    <!--Controllers-->
-    <script src="core\js\main.controller.js"></script>
-    <script src="core\js\navigation.controller.js"></script>
-    <script src="core\js\home.controller.js"></script>
-    <script src="core\js\login.controller.js"></script>
-    <script src="core\js\cashbookForm.controller.js"></script>
-    <script src="core\js\insertTaskForm.controller.js"></script>
-    <script src="core\js\taskPage.controller.js"></script>
-    <script src="core\js\allTaskList.controller.js"></script>
-    <script src="core\js\myTask.controller.js"></script>
-    <script src="core\js\pagination.controller.js"></script>
-    <script src="core\js\cashbookTable.controller.js"></script>
-    <script src="core\js\createProductForm.controller.js"></script>
-    <script src="core\js\productUsageForm.controller.js"></script>
-    <script src="core\js\productUsageTable.controller.js"></script>
-    <script src="core\js\reportOperator.controller.js"></script>
-    <script src="core\js\tab.controller.js"></script>
-    <!--Controllers-->
+    <!--Scripts-->
+    <script src="core/app.js"></script>
+    <script src="core/services.js"></script>
+
+    <script src="core/components/appRoot/appRoot.js"></script>
+    <script src="core/components/navBar/navBar.js"></script>
+    <script src="core/pages/home/home.js"></script>
+    <script src="core/pages/login/login.js"></script>
+    <script src="core/pages/reports/reports.js"></script>
+    <script src="core/pages/tasks/tasks.js"></script>
+
 </head>
+
 <body ng-app="MainApp">
     <app-root>
         Loading...
     </app-root>
 </body>
+
 </html>

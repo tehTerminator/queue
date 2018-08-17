@@ -1,0 +1,28 @@
+<div class="ui bottom attached stackable inverted blue menu">
+    <a href="/q2/home" class="item">
+        <i class="home icon"></i>Home</a>
+    <a href="/q2/products" class="item">
+        <i class="icon cart"></i>Products</a>
+    <a href="/q2/tasks" class="item">
+        <i class="icon pencil"></i>Tasks</a>
+    <a href="/q2/cashbook" class="item">
+        <i class="icon money"></i>Cashbook</a>
+    <a href="" class="item">
+        <i class="icon print"></i>Reports</a>
+    <a href="" class="item">
+        <i class="icon wrench"></i>Admin</a>
+
+    <div class="ui right dropdown item">
+        {{ user.name }}
+        <i class="dropdown icon"></i>
+        <div ng-init="initDropdown()" class="menu">
+            <div class="item" ng-click="logout()" ng-show="user.isLoggedIn" href="logout">
+                Logout
+            </div>
+
+            <a class="item" href="/q2/login" ng-hide="user.isLoggedIn" href="login">
+                Login
+            </a>
+        </div>
+    </div>
+</div>

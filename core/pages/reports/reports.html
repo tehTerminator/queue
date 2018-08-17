@@ -1,0 +1,11 @@
+<div ng-controller="TabController">
+    <div class="ui top attached tabular menu">
+        <a class="item" ng-click="setTab('operator.html')" ng-class="getClass('operator.html')">Operator Report</a>
+        <a class="item" ng-click="setTab('product.html')" ng-class="getClass('product.html')">Product Report</a>
+        <a class="item" ng-click="setTab('cashbook.html')" ng-class="getClass('cashbook.html')">Cashbook Report</a>
+        <a class="item" ng-click="setTab('accountBook.html')" ng-class="getClass('accountBook.html')">Account Book</a>
+    </div>
+    <div class="ui bottom attached segment" ng-include="tabUrl" ng-init="baseUrl='core/components/report/'">
+        <h1 class="header">Click Any Link</h1>
+    </div>
+</div>
