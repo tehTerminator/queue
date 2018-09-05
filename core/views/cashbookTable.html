@@ -1,0 +1,36 @@
+<table class="ui table">
+    <thead>
+        <tr>
+            <td>#</td>
+            <td>Posted By</td>
+            <td>Timestamp</td>
+            <td>Account</td>
+            <td>Description</td>
+            <td>Amount</td>
+            <td>Status</td>
+            <td>Action</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="row in cashbook | orderBy : '+id'">
+            <td>{{ row.id }}</td>
+            <td>{{ row.postedBy }}</td>
+            <td>{{ row.datetime }}</td>
+            <td>{{ row.giverName }} <i class="icon right arrow"></i> {{ row.receiverName }} </td>
+            <td>{{ row.description }}</td>
+            <td>{{ row.amount }}</td>
+            <td>{{ row.status }}</td>
+            <td>
+                <button class="ui mini green icon button" ng-click="approveEntry(row)">
+                    <i class="checkmark icon"></i>
+                </button>
+                <button class="ui mini red icon button" ng-click="rejectEntry(row)">
+                    <i class="icon remove"></i>
+                </button>
+                <button class="ui mini blue icon button" ng-click="editEntry(row)">
+                    <i class="edit icon"></i>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>

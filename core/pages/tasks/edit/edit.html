@@ -1,0 +1,39 @@
+<div class="ui form segment">
+    <div class="ui two column grid">
+        <div class="three wide column" ng-init="init()">
+            <div class="ui required field">
+                <label for="id">Id</label>
+                <div class="ui input">
+                    <input type="text" name="id" ng-model="task.id" disabled>
+                </div>
+            </div>
+            <div class="ui required field">
+                <label for="id">Customer Name</label>
+                <div class="ui input">
+                    <input type="text" name="id" ng-model="task.customer">
+                </div>
+            </div>
+            <div class="ui field">
+                <label for="type">Job Type</label>
+                <select ng-model="task.type" class="ui fluid search selection dropdown" ng-options="category as category.name for category in categories track by category.id"
+                    id="taskCategoryDropdown"></select>
+            </div>
+            <div class="ui field">
+                <label for="amountCollected">Amount Collected</label>
+                <div class="ui icon input">
+                    <input type="number" name="amountCollected" ng-model="task.amountCollected" min="0" step="0.01">
+                    <i class="rupee icon"></i>
+                </div>
+            </div>
+
+            <button class="ui green fluid labeled icon button" ng-click="save()">
+                <i class="icon save"></i>
+                Save
+            </button>
+        </div>
+        <div class="ui thirteen wide column">
+            <cashbook-form></cashbook-form>
+            <cashbook-table></cashbook-table>
+        </div>
+    </div>
+</div>

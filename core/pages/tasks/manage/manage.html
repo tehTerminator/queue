@@ -1,0 +1,52 @@
+<div class="ui top attached secondary menu">
+    <div class="header item">
+        Date
+    </div>
+    <div class="item">
+        <div class="ui transparent input">
+            <input type="date" ng-model="myDate" ng-change="fetchTasks()">
+        </div>
+    </div>
+    <div class="right menu">
+        <div class="ui transparent input">
+            <input type="text" name="searchText" ng-model="searchText.customer" placeholder="Search...">
+        </div>
+    </div>
+</div>
+<table class="ui bottom attached compact center aligned table segment">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th class="four wide">Customer</th>
+            <th>Job Type</th>
+            <th class="three wide">Insert Time</th>
+            <th>Completed By</th>
+            <th class="one wide">Amount</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr ng-repeat="task in tasks | filter:searchText">
+            <td>{{ task.id }}</td>
+            <td>{{ task.customer }}</td>
+            <td>{{ task.category }}</td>
+            <td>{{ task.insertTime }}</td>
+            <td>{{ task.acceptedByUser }}</td>
+            <td>{{ task.amountCollected }}</td>
+            <td>{{ task.status }}</td>
+            <td>
+                <button class="ui icon green button" ng-click="approveTask(task)">
+                    <i class="checkmark icon"></i>
+                </button>
+                <button class="ui icon red button" ng-click="rejectTask(task)">
+                    <i class="trash icon"></i>
+                </button>
+                <a class="ui icon blue button" ng-href="/q2/task/edit/{{ task.id}}">
+                    <i class="edit icon"></i>
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</table>

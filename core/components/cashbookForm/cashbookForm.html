@@ -1,0 +1,45 @@
+<div class="ui form segment">
+    <h3 class="ui header">Enter Cash Transaction Details</h3>
+    <div class="ui four stackable fields">
+        <div class="one wide field">
+            <label for="id">#</label>
+            <div class="ui input">
+                <input type="number" min="0" ng-model="Number(transaction.id)" disabled>
+            </div>
+        </div>
+        <div class="four wide field">
+            <label for="giver">From Account</label>
+            <div class="input">
+                <select ng-options="option.name for option in accounts track by option.id" ng-model="transaction.giver"
+                    class="ui fluid search selection dropdown">
+                </select>
+            </div>
+        </div>
+        <div class="four wide field">
+            <label for="receiver">To Account</label>
+            <div class="ui input">
+                <select ng-options="option.name for option in accounts track by option.id" ng-model="transaction.receiver"
+                    class="ui fluid search selection dropdown">
+                </select>
+            </div>
+        </div>
+        <div class="five wide field">
+            <label for="description">Description</label>
+            <input type="text" ng-model="transaction.description" id="descriptionField">
+        </div>
+        <div class="two wide field">
+            <label for="amount">Amount</label>
+            <input type="number" min="0" step="0.01" ng-model="Number(transaction.amount)">
+        </div>
+    </div>
+
+    <button ng-show="transaction.id == 0" ng-click="add()" class="ui green labeled icon button">
+        <i class="icon add"></i>
+        Add
+    </button>
+
+    <button ng-show="transaction.id > 0" ng-click="update()" class="ui green labeled icon button">
+        <i class="icon save"></i>
+        Update
+    </button>
+</div>

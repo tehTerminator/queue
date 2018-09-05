@@ -1,0 +1,55 @@
+<div>
+    <div class="ui menu">
+
+        <div class="header item">
+            Set Date
+        </div>
+
+        <div class="item">
+            <div class="ui transparent input">
+                <input type="date" ng-model="myDate" ng-change="fetchTasks()">
+            </div>
+        </div>
+
+        <div class=" ui pointing dropdown icon item" ng-init="initDropdown()" title="Categories">
+            <i class="cart icon"></i>
+            <i class="icon dropdown"></i>
+            <div class="menu">
+                <a class="item" ng-click="selectCategoryId(0)">All</a>
+                <a class="item" ng-repeat="category in categories" ng-click="selectCategory(category.id)">{{
+                    category.name }}</a>
+            </div>
+        </div>
+
+        <div class="ui pointing dropdown icon item" title="Users">
+            <i class="user icon"></i>
+            <i class="icon dropdown"></i>
+            <div class="menu">
+                <a class="item" ng-click="selectUser(0)">All Users</a>
+                <a class="item" ng-repeat="user in users" ng-click="selectUser(user.id)">{{ user.name }}</a>
+            </div>
+        </div>
+
+        <a class="icon item" ng-click="refreshTasks()" ng-show="allowRefresh==true">
+            <i class="spinner icon"></i>
+        </a>
+
+        <div class="right menu">
+            <div class="item">
+                <div class="ui transparent input">
+                    <input type="text" placeholder="Search" ng-model="searchText.customer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ui full scrolling segment">
+        <div ng-repeat="task in tasks | CategoryFilter: selected.category | UserFilter: selected.user | filter:searchText | orderBy : '+id'"
+            class="ui image label" style="margin-bottom: 5px" ng-class="getColor(task)" title="{{ task.insertTime | dateToISO | date : 'dd - MMM hh:mm a' }}">
+            <img ng-src="img/{{ task.logoUrl }}"> {{ $index + 1 }} ({{ task.id }}) {{ task.customer }}
+            <div class="detail" ng-if="task.acceptedBy !=0">
+                {{ task.acceptedByUser }}
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,14 +1,49 @@
 <div class="ui bottom attached stackable inverted blue menu">
-    <a href="/q2/home" class="item">
+    <a href="/q3/home" class="item">
         <i class="home icon"></i>Home</a>
-    <a href="/q2/products" class="item">
-        <i class="icon cart"></i>Products</a>
-    <a href="/q2/tasks" class="item">
-        <i class="icon pencil"></i>Tasks</a>
-    <a href="/q2/cashbook" class="item">
-        <i class="icon money"></i>Cashbook</a>
-    <a href="" class="item">
-        <i class="icon print"></i>Reports</a>
+    <a href="/q3/products" class="item">
+        <i class="icon cart"></i>Products
+    </a>
+    <div class="ui dropdown item">
+        Tasks
+        <i class="icon dropdown"></i>
+        <div class="menu">
+            <a href="/q3/tasks/liveView" class="item">
+                <i class="paper plane icon"></i>
+                Live View
+            </a>
+            <a href="/q3/tasks/myTasks" class="item">
+                <i class="keyboard icon"></i>
+                My Tasks
+            </a>
+            <a href="/q3/tasks/manage" class="item">
+                <i class="wrench icon"></i>
+                Manage Tasks
+            </a>
+        </div>
+    </div>
+    <a href="/q3/cashbook" class="item">
+        <i class="icon money"></i>
+        Cashbook
+    </a>
+    <div class="ui dropdown item">
+        Report
+        <i class="icon printer"></i>
+        <div class="menu">
+            <a href="/q3/tasks/liveView" class="item">
+                <i class="paper plane icon"></i>
+                Operator
+            </a>
+            <a href="/q3/tasks/myTasks" class="item">
+                <i class="keyboard icon"></i>
+                My Tasks
+            </a>
+            <a href="/q3/tasks/manage" class="item">
+                <i class="wrench icon"></i>
+                Manage Tasks
+            </a>
+        </div>
+    </div>
     <a href="" class="item">
         <i class="icon wrench"></i>Admin</a>
 
@@ -19,8 +54,7 @@
             <div class="item" ng-click="logout()" ng-show="user.isLoggedIn" href="logout">
                 Logout
             </div>
-
-            <a class="item" href="/q2/login" ng-hide="user.isLoggedIn" href="login">
+            <a class="item" href="/q3/login" ng-hide="user.isLoggedIn" href="login">
                 Login
             </a>
         </div>

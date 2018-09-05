@@ -1,0 +1,26 @@
+<table class="ui table segment">
+    <thead>
+        <tr>
+            <td>#</td>
+            <td>Product Name</td>
+            <td>Quantity</td>
+            <td>Action</td>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr ng-repeat="product in products">
+            <td>{{ product.id }}</td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.quantity }}</td>
+            <td>
+                <button class="ui icon red button" ng-click="delete(product)">
+                    <i class="trash icon"></i>
+                </button>
+                <a class="ui icon blue button" ng-click="edit(product)">
+                    <i class="edit icon"></i>
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</table>

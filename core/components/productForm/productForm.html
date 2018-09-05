@@ -1,0 +1,35 @@
+<div class="ui form segment">
+    <div class="ui header">
+        Create New Product
+    </div>
+    <div class="ui field">
+        <label for="product_id">Product Id</label>
+        <div class="ui input">
+            <input type="number" name="product_id" ng-model="product.id" disabled>
+        </div>
+    </div>
+    <div class="ui field">
+        <label for="product_name">Product Name</label>
+        <div class="ui input">
+            <input type="text" ng-model="product.name" name="product_name">
+        </div>
+    </div>
+
+    <div class="ui field">
+        <label for="quantity">Initial Quantity</label>
+        <div class="ui input">
+            <input type="number" name="quantity" ng-model="product.quantity">
+        </div>
+    </div>
+
+    <button class="ui green button" ng-show="product.name.length > 3 && product.id == 0" ng-click="createProduct()">
+        Create
+    </button>
+    <button class="ui green button" ng-show="product.name.length > 3 && product.id > 0" ng-click="updateProduct()">
+        Update
+    </button>
+    <button class="ui red button" ng-click="reset()">
+        Reset
+    </button>
+
+</div>

@@ -1,0 +1,24 @@
+<div class="ui segment">
+    <div class="ui header">
+        Recent Product Usage
+    </div>
+    <div class="content">
+        <div class="ui list">
+            <div class="item" ng-repeat="item in product_data">
+                <i class="icon red circle" ng-if="item.direction=='IN'"></i>
+                <i class="icon green circle" ng-if="item.direction=='OUT'"></i>
+                <div class="content">
+                    <div class=" header ">
+                        {{ item.datetime | dateToISO | date:'shortTime'}} - {{ item.name }}
+                    </div>
+                    <div class="description ">
+                        {{ item.quantity }} for {{ item.amount | rupee }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="action">
+        <button class="ui fluid button " ng-click="refresh() ">Refresh</button>
+    </div>
+</div>

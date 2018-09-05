@@ -1,4 +1,4 @@
-app.controller('LoginPageController', function ($scope, $location, UserService) {
+app.controller('LoginPageController', function ($scope, UserService) {
     $scope.user = {
         name: '',
         password: '',

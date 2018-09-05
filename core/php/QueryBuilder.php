@@ -29,19 +29,23 @@
             $this->query = "SELECT {$cols} FROM $this->tableName"; 
             
             if (isset($params['join'])) {
-                $this->query .= $this->join($param['join']['type'], $param['join']['table'], $params['join']['condition']);
+                $this->query .= " {$params['join']}";
             }
 
             if (isset($params['andWhere']) || isset($params['orWhere']) ) {
                 $this->query .= $this->where($params);
             }
 
-            if (isset($param['groupBy'])) {
-                $this->query .= $this->group($param['groupBy']);
+            if (isset($params['groupBy'])) {
+                $this->query .= $this->group($params['groupBy']);
             }
 
-            if (isset($param['orderBy'])) {
-                $this->query .= $this->group($param['orderBy']);
+            if (isset($params['orderBy'])) {
+                $this->query .= $this->orderBy($params['orderBy']);
+            }
+
+            if( isset($params['limit']) ){
+                $this->query .= " LIMIT {$params['limit']}";
             }
         }
 
@@ -71,8 +75,9 @@
             $this->query .= $this->where($param);
         }
 
-        public function execute($userData=NULL){
+        public function execute($params){
             $stmt = $this->connection->prepare($this->query);
+            $userData = isset($params['userData']) ? $this->prefix($params['userData'], ":", true) : NULL;
             $rowCounter = 0;
 
             if( $this->autoCommit == false ){
@@ -89,6 +94,8 @@
                     $stmt->execute($userData);
                     $rowCounter++;
                 }
+                
+                $this->output['lastInsertId'] = $this->connection->lastInsertId();
 
                 if( $this->autoCommit == false && $rowCounter == $stmt->rowCount() ){
                     $this->connection->commit();
@@ -109,15 +116,27 @@
             return $this->output;
         }
 
-        private function prefix($someArray, $pre){
+        /**
+         * Adds Prefix to Keys of Array
+         */
+        private function prefix($someArray, $pre, $isAssoc=false){
             $count = count($someArray);
             $output = array();
-            for ($i=0; $i<$count; $i++){
-                array_push($output, "{$pre}{$someArray[$i]}");
+            if( $isAssoc ){
+                foreach($someArray as $key=>$value){
+                    $output[$pre . $key] = $value;
+                }
+            } else {
+                foreach($someArray as $key=>$value){
+                    array_push($output, $pre . $value);
+                }
             }
             return $output;
         }
 
+        /**
+         * Encapsulate Keys of Array within Provided Character
+         */
         private function encapsulate($someArray, $char){
             $count = count($someArray);
             $output = array();
@@ -157,10 +176,6 @@
             return " ORDER BY {$orderType}";
         }
         
-        private function join($joinType, $table, $condition){
-            return " {$joinType} {$table} ON {$condition}";
-        }
-        
         private function group($by){
             return " GROUP BY {$by}";
         }
@@ -170,25 +185,26 @@
             $conditional_operator = " {$conditional_operator} "; 
             foreach ($conditionArray as $key => $value) {
                 $val = ""; 
-                if (is_array($value) && isset($value['noQuotes'])) {
-                    $val = " = {$value[0]}"; 
-                }else if (is_array($value)) {
-                    if (count($value) == 2) {
+                if( is_array($value) ){
+                    if( in_array("noQuotes", $value) && count($value) == 2 ){
+                        $val = " = {$value[0]}"; 
+                    } else if ((count($value) == 3) && in_array("noQuotes", $value)) {
+                        $val = "{$value[0]} {$value[1]}";
+                    } else if (count($value) == 2) {
                         $val = "{$value[0]} '{$value[1]}'"; 
-                    }
-                    else if (count($value) == 3) {
+                    } else if (count($value) == 3 && in_array("RANGE", $value)) {
                         $val = "{$value[0]} '{$value[1]}' AND '{$value[2]}'"; 
-                    }else {
+                    } else if (count($value) >= 3 && in_array("LIST", $value)) {
                         $valList = array();
-                        for($i = 1; $i < count($value); $i++){
+                        for($i = 1; $i < count($value) - 1; $i++){
                             array_push($valList, "'{$value[$i]}'");
                         }
                         $val = "{$value[0]} (" . implode(',', $valList) . ")";
                     }
-                }else {
+                } else {
                     $val = " = '{$value}'"; 
                 }
-                array_push($conditions, "`{$key}` {$val}"); 
+                array_push($conditions, "{$key} {$val}"); 
             }
             return implode($conditional_operator, $conditions); 
         }

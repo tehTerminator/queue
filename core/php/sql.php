@@ -7,7 +7,7 @@
 
     
     define('LOCALHOST', 'localhost');
-    define('DBNAME', 'shopApp');
+    define('DBNAME', 'shopApp2');
     define('USER', 'root');
     define('PASSWORD', '');
 
@@ -52,9 +52,9 @@
             $tableName = $request['tableName'];
             $qb = new QueryBuilder($connection, $tableName);
             $queryType = $request['queryType'];
-            $request['param'] = isset($request['params']) ? $request['params'] : NULL;
+            $request['params'] = isset($request['params']) ? $request['params'] : NULL;
             $qb->{$queryType}($request['params']);
-            $qb->execute();
+            $qb->execute($request['params']);
             array_push($output, $qb->get_output());
         } else if( is_array($request) ){
             foreach($request as $value) {

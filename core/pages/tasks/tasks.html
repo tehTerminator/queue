@@ -1,22 +1,8 @@
-<div class="ui styled fluid accordion" ng-init="initAccordion()">
-    <div class="active title">
-        All Tasks
+<div class="ui two stackable column grid">
+    <div class="ui eight wide column">
+        <list-all-task></list-all-task>
     </div>
-    <div class="active content">
-        <div class="ui two stackable column grid">
-            <div class="ui four wide column">
-                <insert-task-form></insert-task-form>
-            </div>
-            <div class="ui twelve wide column">
-                <list-all-task></list-all-task>
-            </div>
-        </div>
-    </div>
-
-    <div class="title">
-        My Tasks
-    </div>
-    <div class="content">
+    <div class="ui eight wide column">
         <my-tasks></my-tasks>
     </div>
 </div>

@@ -12,7 +12,7 @@ app
         $scope.user = UserService.activeUser;
 
         $scope.init = function () {
-            UserService.retrieve();
+            UserService.fetch();
         }
 
         $scope.forceLogin = function () {

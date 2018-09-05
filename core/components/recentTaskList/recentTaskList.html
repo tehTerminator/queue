@@ -1,0 +1,13 @@
+<div class="ui segment">
+    <div class="ui header">
+        Recently Inserted Tasks
+    </div>
+    <div class="content">
+        <div class="ui relaxed divided list">
+            <div class="item" ng-repeat="task in tasks">
+                {{ task.id }} - {{ task.customer }}
+            </div>
+        </div>
+    </div>
+    <button class="ui fluid button" ng-click="refresh()">Refresh</button>
+</div>

@@ -1,0 +1,59 @@
+<div class="ui top attached stackable secondary menu">
+    <div class="ui pointing dropdown icon item" ng-init="initDropdown()" title="Categories">
+        <i class="cart icon"></i>
+        <i class="icon dropdown"></i>
+        <div class="menu">
+            <a class="item" ng-click="selectCategoryId(0)">All</a>
+            <a class="item" ng-repeat="category in categories" ng-click="selectCategoryId(category)">{{ category.name
+                }}</a>
+        </div>
+    </div>
+
+    <div class="ui pointing dropdown icon item" title="Dates">
+        <i class="icon calendar"></i>
+        <i class="dropdown icon"></i>
+        <div class="menu">
+            <a class="item" ng-click="setDate(0)">All Dates</a>
+            <a class="item" ng-click="setDate(date)" ng-repeat="date in dates">{{ date | date : 'dd - MMM' }} </a>
+            <a class="item" ng-click="setDate(-1)">Old</a>
+        </div>
+    </div>
+
+    <a class="item" ng-click="toggleFilter()" title="{{ toggleButtonText }}">
+        <i class="icon" ng-class="hideSelected == true ? 'unhide' : 'hide'"></i>
+    </a>
+
+    <a class="icon item" ng-click="refreshTasks()" ng-show="allowRefresh==true">
+        <i class="spinner icon"></i>
+    </a>
+
+    <div class="right menu">
+        <div class="item">
+            <div class="ui mini transparent input">
+                <input type="text" placeholder="Search" ng-model="searchText">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ui bottom attached full scrolling segment">
+    <div class="ui divided list">
+        <a class="item" ng-click="select(task)" ng-repeat="task in tasks | HideTask:hideSelected | UserFilter:selectedUserId | CategoryFilter:selectedCategoryId | DateFilter: filteredDate |orderBy : '+id' | filter:searchText">
+            <div class="right floated content">
+                <div class="ui label" ng-class="getColor(task)">
+                    {{ task.id }}
+                </div>
+            </div>
+            <img class="ui mini image" ng-src="img/{{ task.logoUrl }}">
+            <div class="content">
+                <div class="header">{{ task.customer }}</div>
+                <div class="description">
+                    {{ task.insertTime | dateToISO | date : 'dd - MMM hh:mm a' }}
+                    <span ng-if="task.acceptedBy != 0">
+                        - {{ task.acceptedByUser }}
+                    </span>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>

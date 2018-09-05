@@ -1,0 +1,35 @@
+<div class="ui three full scrolling cards">
+    <div class="raised card" ng-repeat="task in tasks | UserFilter:user.id | orderBy : '+id'">
+        <div class="content">
+            <img class="ui right floated mini image" ng-src="img/{{ task.logoUrl }}">
+            <div class="header">{{ task.customer }}</div>
+            <div class="meta">
+                {{ task.insertTime | dateToISO | date : 'dd - MMM hh:mm a' }}
+            </div>
+            <div class="description">
+                Paid {{ task.amountCollected }} {{ task.remark }}. Task Inserted By {{ task.insertedByUser }}
+            </div>
+        </div>
+
+        <div class="ui extra content">
+            <div class="ui four icon buttons">
+                <div title="Activate" class="ui green button" ng-show="task.status == 'INACTIVE'" ng-click="setActive(task)">
+                    <i class="icon play"></i>
+                </div>
+                <div title="Complete" class="ui green button" ng-show="task.status == 'ACTIVE'" ng-click="setCompleted(task)">
+                    <i class="icon checkmark"></i>
+                </div>
+                <div title="Deactivate" class="ui blue button" ng-click="setInactive(task)" ng-class="task.status == 'INACTIVE' ? 'disabled' : ''">
+                    <i class="icon clock"></i>
+                </div>
+                <div title="Unmark" class="ui orange button" ng-click="unselect(task)">
+                    <i class="icon remove"></i>
+                </div>
+                <div title="Delete" class="ui red button" ng-click="setRejected(task)" ng-class="user.authLevel < 2 ? 'disabled' : ''">
+                    <i class="icon trash"></i>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

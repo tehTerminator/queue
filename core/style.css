@@ -1,0 +1,9 @@
+.full.scrolling {
+    max-height: 600px !important;
+    overflow-y: scroll;
+}
+
+.half.scrolling {
+    max-width: 300px !important;
+    overflow-y: scroll;
+}
