@@ -7,7 +7,7 @@
 
     
     define('LOCALHOST', 'localhost');
-    define('DBNAME', 'shopApp2');
+    define('DBNAME', 'shopApp');
     define('USER', 'root');
     define('PASSWORD', '');
 

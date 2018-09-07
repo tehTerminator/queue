@@ -38,8 +38,17 @@ app
                 controller: 'EditTaskController'
             })
 
-            .when('/report', {
-                templateUrl: 'core/pages/reports/report.html',
+            .when('/report/operator/daily', {
+                templateUrl: 'core/pages/reports/operator/daily/daily.html',
+                controller: 'OperatorDayReportController'
+            })
+
+            .when('/report/operator/range', {
+                templateUrl: 'core/pages/reports/operator/range/range.html',
+            })
+
+            .when('/report/operator/product', {
+                templateUrl: 'core/pages/reports/operator/product/product.html',
             })
 
             .when('/admin', {

@@ -1,0 +1,26 @@
+<div class="ui two column grid">
+    <div class="four wide column">
+        <div class="ui form">
+            <div class="field">
+                <label for="operatorName">Operator Name</label>
+                <div class="input">
+                    <select class="ui fluid dropdown" ng-init="initDropdown()" ng-options="option.name for option in users track by option.id"
+                        ng-model="selectedOperator"></select>
+                </div>
+            </div>
+            <div class="field">
+                <label for="startDate">Date</label>
+                <div class="input">
+                    <input type="date" ng-model="myDate">
+                </div>
+            </div>
+
+            <button class="ui fluid button" ng-click="fetchData()">Fetch</button>
+        </div>
+
+    </div>
+
+    <div class="twelve wide column">
+
+    </div>
+</div>

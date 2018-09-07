@@ -24,7 +24,6 @@ app
         $scope.getProducts = function () {
             MySQLService.select('product')
                 .then(function (response) {
-                    console.log(response);
                     $scope.products = response.data.rows;
                     $scope.initDropdown();
                 });

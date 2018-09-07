@@ -21,6 +21,9 @@ app
 
         $scope.initDropdown = function () {
             jQuery(".ui.dropdown").dropdown();
+            jQuery(".browse.item").popup({
+                'on': 'click'
+            });
         }
 
         $scope.$watch(function () {
