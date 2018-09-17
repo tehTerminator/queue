@@ -112,4 +112,27 @@ app
             });
         }
 
+        $scope.unmarkTask = function (task) {
+            if (task.status == 'APPROVED' || task.status == 'REJECTED') {
+                return;
+            }
+
+            MySQLService.update('task', {
+                'andWhere': {
+                    id: task.id
+                },
+                'userData': {
+                    'acceptedBy': 0,
+                    'status': 'INACTIVE'
+                }
+            }).then(function (response) {
+                if (response.status === 200) {
+                    task.acceptedBy = 0;
+                    task.status = 'INACTIVE';
+                    $scope.updateCashbook(task);
+                }
+            })
+
+        }
+
     });

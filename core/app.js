@@ -1,8 +1,7 @@
 const app = angular.module("MainApp", ['ngRoute']);
 const serverLink = 'core/php/sql.php';
 
-app
-    .config(function ($routeProvider, $locationProvider) {
+app.config(function ($routeProvider, $locationProvider) {
         $routeProvider
             .when('/', {
                 templateUrl: 'core/pages/home/home.html',
@@ -38,17 +37,9 @@ app
                 controller: 'EditTaskController'
             })
 
-            .when('/report/operator/daily', {
-                templateUrl: 'core/pages/reports/operator/daily/daily.html',
-                controller: 'OperatorDayReportController'
-            })
-
-            .when('/report/operator/range', {
-                templateUrl: 'core/pages/reports/operator/range/range.html',
-            })
-
-            .when('/report/operator/product', {
-                templateUrl: 'core/pages/reports/operator/product/product.html',
+            .when('/report/day', {
+                templateUrl: 'core/pages/reports/dayReport/dayReport.html',
+                controller: 'DayReportController'
             })
 
             .when('/admin', {
@@ -81,6 +72,7 @@ app
     .filter('rupee', function () {
         return function (input) {
             input = Number(input).toFixed(2);
+            if (isNaN(input)) input = 0.00;
             return "Rs. " + input;
         }
     })

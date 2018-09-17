@@ -37,7 +37,7 @@ app
     })
 
     .factory('UserService', function (MySQLService, $location) {
-        var userService = {};
+        const userService = {};
 
         userService.users = [];
         userService.activeUser = {
@@ -86,6 +86,8 @@ app
                         var data = response['data']['rows'];
 
                         if (data.length == 1) {
+                            window.localStorage.setItem("username", username);
+                            window.localStorage.setItem("password", password);
                             userService.activeUser = data[0];
                             userService.activeUser.isLoggedIn = true;
                             $location.url('/');
@@ -106,6 +108,8 @@ app
                 authLevel: 0,
                 isLoggedIn: false
             }
+            window.localStorage.clear('username');
+            window.localStorage.clear('password');
             $location.url("login");
         }
 
@@ -118,4 +122,4 @@ app
         }
 
         return userService;
-    })
+    });

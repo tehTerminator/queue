@@ -1,0 +1,63 @@
+<div class="ui three column grid">
+    <div class="six wide column">
+        <table class="ui compact table">
+            <thead>
+                <tr>
+                    <th>Account</th>
+                    <th class="four wide">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="row in income.data">
+                    <td>{{ row.giverName }}</td>
+                    <td>{{ row.amount | rupee }}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>Total</td>
+                    <td>{{ income.total | rupee }}</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="six wide column">
+        <table class="ui compact table">
+            <thead>
+                <tr>
+                    <th>Account</th>
+                    <th class="four wide">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="row in expense.data">
+                    <td>{{ row.receiverName }}</td>
+                    <td>{{ row.amount | rupee }}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>Total</td>
+                    <td>{{ expense.total | rupee }}</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div class="four wide column">
+        <table class="ui compact table">
+            <tr class="positive">
+                <td>In</td>
+                <td class="six wide">{{ income.total | rupee }}</td>
+            </tr>
+            <tr class="negative">
+                <td>Out</td>
+                <td>{{ expense.total | rupee }}</td>
+            </tr>
+            <tr>
+                <td>Net</td>
+                <td>{{ (income.total - expense.total) | rupee }}</td>
+            </tr>
+        </table>
+    </div>
+</div>

@@ -37,13 +37,16 @@
             <td>{{ task.amountCollected }}</td>
             <td>{{ task.status }}</td>
             <td>
-                <button class="ui icon green button" ng-click="approveTask(task)">
+                <button class="ui icon green button" title="Approve" ng-click="approveTask(task)">
                     <i class="checkmark icon"></i>
                 </button>
-                <button class="ui icon red button" ng-click="rejectTask(task)">
+                <button class="ui icon teal button" title="Unmark" ng-click="unmarkTask(task)">
+                    <i class="eject icon"></i>
+                </button>
+                <button class="ui icon red button" title="Delete" ng-click="rejectTask(task)">
                     <i class="trash icon"></i>
                 </button>
-                <a class="ui icon blue button" ng-href="/q2/task/edit/{{ task.id}}">
+                <a class="ui icon blue button" title="Edit" ng-href="/q2/task/edit/{{ task.id}}">
                     <i class="edit icon"></i>
                 </a>
             </td>

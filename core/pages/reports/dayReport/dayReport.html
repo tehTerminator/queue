@@ -1,0 +1,18 @@
+<div class="ui menu">
+    <div class="header item">
+        Select Date
+    </div>
+    <div class="item">
+        <div class="ui transparent input">
+            <input type="date" ng-model="myDate">
+        </div>
+    </div>
+
+    <div class="item" ng-click="fetch()">
+        Refresh
+    </div>
+</div>
+
+<div class="ui segment">
+    <income-expense-table></income-expense-table>
+</div>

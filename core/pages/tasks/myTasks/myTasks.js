@@ -86,6 +86,10 @@ app
                 } else {
                     alert("Connection Broken, Please Wait or Try Again");
                 }
+            }).then(function (response) {
+                if (response.status === 200) {
+                    $scope.updateCashbook(task);
+                }
             });
         }
 
@@ -114,10 +118,10 @@ app
             }
             const request = {
                 "andWhere": {
-                    "id": UserService.activeUser.id
+                    "id": task.id
                 },
                 "userData": {
-                    "acceptedBy": userId
+                    "acceptedBy": UserService.activeUser.id
                 }
             };
 
@@ -143,6 +147,10 @@ app
                     } else {
                         alert("Connection Broken, Please Wait or Try Again");
                     }
+                }).then(function (response) {
+                    if (response.status === 200) {
+                        $scope.updateCashbook(task);
+                    }
                 });
             }
 
@@ -164,6 +172,10 @@ app
                     task.acceptedBy = 0;
                 } else {
                     alert("Connection Broken, Please Wait or Try Again");
+                }
+            }).then(function (response) {
+                if (response.status === 200) {
+                    $scope.updateCashbook(task);
                 }
             });
         }
@@ -236,6 +248,32 @@ app
                 return 'inverted';
             else if (item.status == 'APPROVED')
                 return 'blue';
+        }
+
+        $scope.updateCashbook = function (task) {
+            let cashbookIds = [];
+            MySQLService.select('task_cashbook', {
+                'andWhere': {
+                    'task_id': task.id
+                }
+            }).then(function (response) {
+                if (response.status === 200) {
+                    response.data.rows.forEach(function (element) {
+                        cashbookIds.push(element['cashbook_id']);
+                    });
+                }
+            }).then(function () {
+                cashbookIds.forEach(function (item) {
+                    MySQLService.update('cashbook', {
+                        'andWhere': {
+                            'id': item
+                        },
+                        'userData': {
+                            'status': task.status
+                        }
+                    })
+                });
+            });
         }
 
         $scope.init();

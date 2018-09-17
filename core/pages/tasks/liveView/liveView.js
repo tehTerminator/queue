@@ -32,6 +32,7 @@ app
         });
 
         $scope.fetchTasks = function () {
+            console.log($scope.myDate);
             const request = {
                 'columns': ['task.*', 'categories.name as category', 'categories.logoUrl as logoUrl'],
                 'andWhere': {
