@@ -1,4 +1,4 @@
-<div class="ui top attached secondary menu">
+<div class="ui top attached menu">
     <div class="header item">
         Date
     </div>
@@ -7,6 +7,10 @@
             <input type="date" ng-model="myDate" ng-change="fetchTasks()">
         </div>
     </div>
+    <a class="item" ng-click="fetchTasks()">
+        <i class="icon refresh"></i>
+        Refresh
+    </a>
     <div class="right menu">
         <div class="ui transparent input">
             <input type="text" name="searchText" ng-model="searchText.customer" placeholder="Search...">
@@ -17,7 +21,7 @@
     <thead>
         <tr>
             <th>#</th>
-            <th class="four wide">Customer</th>
+            <th class="three wide">Customer</th>
             <th>Job Type</th>
             <th class="three wide">Insert Time</th>
             <th>Completed By</th>
@@ -46,7 +50,7 @@
                 <button class="ui icon red button" title="Delete" ng-click="rejectTask(task)">
                     <i class="trash icon"></i>
                 </button>
-                <a class="ui icon blue button" title="Edit" ng-href="/q2/task/edit/{{ task.id}}">
+                <a class="ui icon blue button" title="Edit" ng-href="/q3/task/edit/{{ task.id}}">
                     <i class="edit icon"></i>
                 </a>
             </td>

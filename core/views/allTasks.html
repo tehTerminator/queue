@@ -44,7 +44,7 @@
     </div>
 
     <div class="ui full scrolling segment">
-        <div ng-repeat="task in tasks | CategoryFilter: selected.category | UserFilter: selected.user | filter:searchText | orderBy : '+id'"
+        <div ng-repeat="task in tasks | CategoryFilter: selected.category | UserFilter: selected.user | filter:searchText | orderBy : '+task.id'"
             class="ui image label" style="margin-bottom: 5px" ng-class="getColor(task)" title="{{ task.insertTime | dateToISO | date : 'dd - MMM hh:mm a' }}">
             <img ng-src="img/{{ task.logoUrl }}"> {{ $index + 1 }} ({{ task.id }}) {{ task.customer }}
             <div class="detail" ng-if="task.acceptedBy !=0">
