@@ -159,8 +159,8 @@ app
                 const userData = {
                     description: "Sales - " + $scope.task.customerName + " - " + $scope.task.selectedCategory.name,
                     user_id: UserService.activeUser.id,
-                    giver: 10,
-                    receiver: 2,
+                    giver: $scope.accounts.find(x => x.name.toLowerCase() == 'commission').name,
+                    receiver: $scope.accounts.find(x => x.name.toLowerCase() == 'shop').name,
                     amount: finalAmount,
                     status: cashBookEntryStatus
                 }
