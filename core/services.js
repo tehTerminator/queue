@@ -83,6 +83,7 @@ app
 
                 .then(function (response) {
                     if (response.status == 200) {
+                        console.log(response);
                         var data = response['data']['rows'];
 
                         if (data.length == 1) {
