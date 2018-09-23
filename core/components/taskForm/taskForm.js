@@ -98,7 +98,10 @@ app.directive('taskForm', function () {
             data.status = "COMPLETED";
         }
 
-        MySQLService.insert('task', { 'userData': data }).then(function (response) {
+        MySQLService.insert('task', {
+            'userData': data
+        }).then(function (response) {
+            console.log("Inserting User", response);
             if (response.status === 200) {
                 $rootScope.$broadcast('New Task', {
                     id: response.data.lastInsertId
@@ -132,6 +135,7 @@ app.directive('taskForm', function () {
                 'columns': ['user_id', 'giver', 'receiver', 'description', 'amount', 'status'],
                 'userData': bankEntry
             }).then(function (response) {
+                console.log("Creating Cashbook Entry", response);
                 if (response.status === 200) {
                     let cashbookId = response.data.lastInsertId;
                     $scope.relateTaskAndCashBook(taskId, cashbookId);
@@ -144,8 +148,8 @@ app.directive('taskForm', function () {
             const userData = {
                 description: "Sales - " + $scope.task.customerName + " - " + $scope.task.selectedCategory.name,
                 user_id: UserService.activeUser.id,
-                giver: $scope.accounts.find(x => x.name.toLowerCase() == 'commission').name,
-                receiver: $scope.accounts.find(x => x.name.toLowerCase() == 'shop').name,
+                giver: $scope.accounts.find(x => x.name.toLowerCase() == 'commission').id,
+                receiver: $scope.accounts.find(x => x.name.toLowerCase() == 'shop').id,
                 amount: finalAmount,
                 status: cashBookEntryStatus
             }
@@ -154,6 +158,7 @@ app.directive('taskForm', function () {
                 'columns': ['user_id', 'giver', 'receiver', 'description', 'amount', 'status'],
                 'userData': userData
             }).then(function (response) {
+                console.log("Creating Second Cashbook Entry", response);
                 if (response.status === 200) {
                     let cashbookId = response.data.lastInsertId;
                     $scope.relateTaskAndCashBook(taskId, cashbookId);
@@ -174,7 +179,16 @@ app.directive('taskForm', function () {
 
     $scope.init = () => MySQLService.select('accounts').then(response => $scope.accounts = response.data.rows);
     $scope.initDropdown = () => jQuery(".ui.dropdown").dropdown();
-    $scope.relateTaskAndCashBook = (taskId, cashBookId) => MySQLService.insert('task_cashbook', { 'task_id': taskId, 'cashbook_id': cashBookId });
+    $scope.relateTaskAndCashBook = (taskId, cashBookId) => {
+        MySQLService.insert('task_cashbook', {
+            'userData': {
+                'task_id': taskId,
+                'cashbook_id': cashBookId
+            }
+        }).then(function (response) {
+            console.log("Relating Cashbook and Task", response);
+        })
+    }
 
     $scope.init();
 })
