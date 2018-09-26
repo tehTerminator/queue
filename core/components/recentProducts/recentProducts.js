@@ -11,33 +11,21 @@ app
         $scope.product_data = [];
         $scope.products = [];
 
-        $scope.getProducts = function () {
-            MySQLService
-                .select('product')
-                .then(function (response) {
-                    $scope.products = response.data.rows;
-                })
-        }
-
         $scope.refresh = function () {
-            $scope.getProducts();
-            MySQLService
-                .select('product_transaction', {
-                    'andWhere': {
-                        "DATE(datetime)": ["CURDATE()", "noQuotes"],
-                        'status': ["IN", "PENDING", "COMPLETED", "LIST"]
-                    },
-                    'limit': '10',
-                    'orderBy': "ID DESC",
-                })
-                .then(function (response) {
-                    const serverData = response.data.rows;
-                    serverData.forEach(element => {
-                        element.name = $scope.products.find(x => x.id == element.product_id).name;
-                    });
-                    $scope.product_data = serverData;
-                })
+            MySQLService.select('product_transaction', {
+                'columns': ['product_transaction.*', 'product.name'],
+                'andWhere': {
+                    "DATE(datetime)": ["CURDATE()", "noQuotes"],
+                    'status': ["IN", "PENDING", "COMPLETED", "LIST"]
+                },
+                'limit': '10',
+                'orderBy': "ID DESC",
+                'join': 'join product on product_transaction.product_id = product.id'
+            }).then(response => {
+                console.log(response);
+                $scope.product_data = response.data.rows
+            });
         }
 
-        $scope.getProducts();
+        $scope.$on('Product Added', (e, arg) => $scope.refresh());
     });

@@ -15,29 +15,21 @@ app
 
         $scope.refresh = function () {
             MySQLService
-                .select('product')
-                .then(function (response) {
-                    $scope.products = response.data.rows;
+                .select('product_transaction', {
+                    columns: ['product.name as name', 'sum(product_transaction.quantity) as quantity', 'sum(product_transaction.amount) as amount', 'product_transaction.product_id'],
+                    'groupBy': 'product_id',
+                    andWhere: {
+                        'DATE(datetime)': ['CURDATE()', "noQuotes"],
+                    },
+                    'join': 'product on product.id == product_id'
                 })
-                .then(function () {
-                    $scope.totalAmount = 0;
-                    $scope.transactions = [];
-                    MySQLService
-                        .select('product_transaction', {
-                            columns: ['sum(quantity) as quantity', 'sum(amount) as amount', 'product_id'],
-                            'groupBy': 'product_id',
-                            andWhere: {
-                                'DATE(datetime)': ['CURDATE()', "noQuotes"],
-                            }
-                        })
-                        .then(function (response) {
-                            console.log(response);
-                            angular.forEach(response.data.serverData, function (item) {
-                                $scope.totalAmount += item.amount;
-                                item.name = $scope.products.find(x => x.id = item.product_id).name;
-                                $scope.transactions.push(item);
-                            })
-                        });
+                .then(function (response) {
+                    console.log(response);
+                    angular.forEach(response.data.serverData, function (item) {
+                        $scope.totalAmount += item.amount;
+                        item.name = $scope.products.find(x => x.id = item.product_id).name;
+                        $scope.transactions.push(item);
+                    })
                 });
         }
     });

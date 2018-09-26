@@ -6,7 +6,7 @@ app
             'controller': 'ProductFormController'
         }
     })
-    .controller('ProductFormController', function ($scope, MySQLService) {
+    .controller('ProductFormController', function ($scope, $rootScope, MySQLService) {
         $scope.product = {
             id: 0,
             name: '',
@@ -20,9 +20,9 @@ app
                     quantity: $scope.product.quantity
                 }
             }).then(function (response) {
+                console.log(response);
                 if (response.status === 200 && response.data.rowCount > 0) {
-                    console.log(response);
-                    $scope.$emit("Product Added", {
+                    $rootScope.$broadcast("Product Added", {
                         'id': response.data.lastInsertId,
                         'name': $scope.product.name,
                         'quantity': $scope.product.quantity
@@ -42,8 +42,9 @@ app
                     'quantity': $scope.product.quantity
                 }
             }).then(function (response) {
+                console.log(response);
                 if (response.status === 200 && response.data.rowCount > 0) {
-                    $scope.$emit("Product Updated", {
+                    $rootScope.$broadcast("Product Updated", {
                         'id': $scope.product.id,
                         'name': $scope.product.name,
                         'quantity': $scope.product.quantity
