@@ -31,13 +31,15 @@ app.directive('incomeExpenseTable', function () {
         console.log("shopAccount", shopAccount);
 
         const request = {
+            'columns': ['sum(amount) as amount', 'giver', 'receiver'],
             'andWhere': {
                 'orWhere': {
                     'giver': shopAccount,
                     'receiver': shopAccount
                 },
                 'andWhere': {
-                    'DATE(datetime)': ['DATE("' + someDate + '")', 'noQuotes']
+                    'DATE(datetime)': ['DATE("' + someDate + '")', 'noQuotes'],
+                    'cashbook.status': ['<>', 'REJECTED']
                 }
             },
             'groupBy': 'giver'
@@ -53,10 +55,10 @@ app.directive('incomeExpenseTable', function () {
                     item.receiverName = $scope.accounts.find(x => x.id == item.receiver).name;
                     if (item.giver == shopAccount.id) {
                         $scope.expense.data.push(item);
-                        $scope.expense.total += item.amount;
+                        $scope.expense.total += Number(item.amount);
                     } else {
                         $scope.income.data.push(item);
-                        $scope.income.total += item.amount;
+                        $scope.income.total += Number(item.amount);
                     }
                 });
             }

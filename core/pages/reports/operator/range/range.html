@@ -3,10 +3,47 @@
     <div class="ui form">
       <div class="field">
         <label for="operatorName">Operator</label>
-        <select class="ui fluid search selection dropdown" ng-options="item as item.name for item in users track by item.id">
+        <select ng-model="selectedUser" class="ui fluid search selection dropdown" ng-options="item as item.name for item in users track by item.id">
         </select>
       </div>
+
+      <div class="field">
+        <label for="fromDate">From Date</label>
+        <input type="date" name="fromDate" ng-model="fromDate">
+      </div>
+      <div class="field">
+        <label for="toDate">From Date</label>
+        <input type="date" name="toDate" ng-model="toDate">
+      </div>
+
+      <button class="ui green fluid button" ng-click="getData()">
+        Get Data
+      </button>
     </div>
+
+  </div>
+
+  <div class="ui twelve wide column" ng-init="init()">
+    <table class="ui compact celled table segment">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Total Jobs</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="row in rows">
+          <td>{{ row.endTime }}</td>
+          <td>{{ row.jobs }}</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="2">Total</td>
+          <td>{{ total }}</td>
+        </tr>
+      </tfoot>
+    </table>
   </div>
 
 </div>

@@ -1,0 +1,33 @@
+<h3>Operator Wise Job Inserted</h3>
+<div class="ui two column grid">
+    <div class="ui column" ng-repeat="user in users">
+        <div class="ui basic segment">
+            <h3 class="ui header">
+                {{ user.name }}
+            </h3>
+            <table class="ui table segment">
+                <thead>
+                    <th>Job Type</th>
+                    <th>Job Rate</th>
+                    <th>Job Count</th>
+                    <th>Total Amount</th>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="row in user.data">
+                        <td>{{ row.category }}</td>
+                        <td>{{ row.rate }}</td>
+                        <td>{{ row.jobs }}</td>
+                        <td>{{ row.amount }}</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td class="right aligned" colspan="3">Total</td>
+                        <td>{{ user.total }}</td>
+                    </tr>
+                </tfoot>
+            </table>
+
+        </div>
+    </div>
+</div>

@@ -2,63 +2,68 @@ const app = angular.module("MainApp", ['ngRoute']);
 const serverLink = 'core/php/sql.php';
 
 app.config(function ($routeProvider, $locationProvider) {
-        $routeProvider
-            .when('/', {
-                templateUrl: 'core/pages/home/home.html',
-                controller: 'HomeController'
-            })
+    $routeProvider
+        .when('/', {
+            templateUrl: 'core/pages/home/home.html',
+            controller: 'HomeController'
+        })
 
-            .when('/products', {
-                templateUrl: 'core/pages/products/products.html',
-                controller: 'ProductsController'
-            })
+        .when('/products', {
+            templateUrl: 'core/pages/products/products.html',
+            controller: 'ProductsController'
+        })
 
-            .when('/cashbook', {
-                templateUrl: 'core/pages/cashbook/cashbook.html',
-            })
+        .when('/cashbook', {
+            templateUrl: 'core/pages/cashbook/cashbook.html',
+        })
 
-            .when('/tasks/myTasks', {
-                templateUrl: 'core/pages/tasks/myTasks/myTasks.html',
-                controller: 'MyTaskController'
-            })
+        .when('/tasks/myTasks', {
+            templateUrl: 'core/pages/tasks/myTasks/myTasks.html',
+            controller: 'MyTaskController'
+        })
 
-            .when('/tasks/liveView', {
-                templateUrl: 'core/pages/tasks/liveView/liveView.html',
-                controller: 'LiveViewController'
-            })
+        .when('/tasks/liveView', {
+            templateUrl: 'core/pages/tasks/liveView/liveView.html',
+            controller: 'LiveViewController'
+        })
 
-            .when('/tasks/manage', {
-                templateUrl: 'core/pages/tasks/manage/manage.html',
-                controller: 'ManageTaskController'
-            })
+        .when('/tasks/manage', {
+            templateUrl: 'core/pages/tasks/manage/manage.html',
+            controller: 'ManageTaskController'
+        })
 
-            .when('/task/edit/:taskId', {
-                templateUrl: 'core/pages/tasks/edit/edit.html',
-                controller: 'EditTaskController'
-            })
+        .when('/task/edit/:taskId', {
+            templateUrl: 'core/pages/tasks/edit/edit.html',
+            controller: 'EditTaskController'
+        })
 
-            .when('/report/day', {
-                templateUrl: 'core/pages/reports/dayReport/dayReport.html',
-                controller: 'DayReportController'
-            })
+        .when('/report/day', {
+            templateUrl: 'core/pages/reports/dayReport/dayReport.html',
+            controller: 'DayReportController'
+        })
 
-            .when('/admin', {
-                templateUrl: 'core/pages/admin/admin.html',
-                controller: 'AdminController'
-            })
+        .when('/report/operator/range', {
+            templateUrl: 'core/pages/reports/operator/range/range.html',
+            controller: 'OperatorPeriodWiseReportController'
+        })
 
-            .when('/login', {
-                templateUrl: 'core/pages/login/login.html',
-                controller: 'LoginPageController'
-            })
+        .when('/admin', {
+            templateUrl: 'core/pages/admin/admin.html',
+            controller: 'AdminController'
+        })
 
-            .otherwise({
-                redirectTo: '/'
-            });
+        .when('/login', {
+            templateUrl: 'core/pages/login/login.html',
+            controller: 'LoginPageController'
+        })
 
-        $locationProvider
-            .html5Mode(true);
-    })
+        .otherwise({
+            redirectTo: '/'
+        });
+
+    $locationProvider
+        .html5Mode(true);
+})
     .filter('dateToISO', function () {
         return function (input) {
             if (typeof (input) == "undefined") {

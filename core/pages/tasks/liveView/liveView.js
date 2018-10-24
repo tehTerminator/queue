@@ -15,6 +15,7 @@ app
             'category': 0,
             'user': 0
         };
+        $scope.selectedUser = {};
         $scope.intervalPromise = null;
 
         $scope.init = function () {

@@ -192,7 +192,7 @@
                         $val = "{$value[0]} {$value[1]}";
                     } else if (count($value) == 2) {
                         $val = "{$value[0]} '{$value[1]}'"; 
-                    } else if (count($value) == 3 && in_array("RANGE", $value)) {
+                    } else if (count($value) == 4 && in_array("RANGE", $value)) {
                         $val = "{$value[0]} '{$value[1]}' AND '{$value[2]}'"; 
                     } else if (count($value) >= 3 && in_array("LIST", $value)) {
                         $valList = array();
