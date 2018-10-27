@@ -1,0 +1,8 @@
+<div class="ui segment">
+    <div class="ui header">Recent Notes</div>
+    <div class="ui divided list">
+        <div class="item" ng-repeat="note in notes">
+            {{ note.description }} - {{ note.amount }} at {{ note.postedOn | dateToISO | date: 'hh:mm:ss a' }}
+        </div>
+    </div>
+</div>

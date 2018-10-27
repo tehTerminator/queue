@@ -11,7 +11,7 @@ app
                 }
 
                 if (typeof (params) == 'undefined ') {
-                    delete(request.params);
+                    delete (request.params);
                 }
                 return $http.post(serverLink, request)
             },
@@ -83,7 +83,7 @@ app
 
                 .then(function (response) {
                     if (response.status == 200) {
-                        console.log(response);
+                        // console.log(response);
                         var data = response['data']['rows'];
 
                         if (data.length == 1) {
